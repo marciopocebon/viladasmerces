@@ -1,0 +1,8 @@
+$sprite-spacing: 20px;
+$sprite-sprite-dimensions: true;
+
+/* Backgrouns repeat-x */
+$sprite-aba-ativa-bg-repeat: repeat-x;
+
+@import "sprites/*.png";
+@include all-sprites-sprites;
