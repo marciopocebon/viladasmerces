@@ -3,8 +3,79 @@
 	@import "compass/utilities/sprites/base";
 // ==================
 
+// MIXINS
+	@import "_grids";
+	@import "_css3";
+// ==================
+
 // SPRITES
+
 	@import "sprites-config";
+// ==================
+
+// GRID
+	$grid: 988px;
+	$mgr: 20px;
+	.grid {
+		width: $grid;
+	}
+
+	.grid-2 {
+		@include responsiveWidth( $grid, 2, $mgr );
+		margin-right: $mgr;
+
+		&:nth-child(2n+2) {
+			margin-right: 0!important;
+		}
+	}
+
+	.grid-3 {
+		@include responsiveWidth( $grid, 3, $mgr );
+		margin-right: $mgr;
+
+		&:nth-child(3n+3) {
+			margin-right: 0!important;
+		}
+	}
+
+	.grid-4 {
+		@include responsiveWidth( $grid, 4, $mgr );
+		margin-right: $mgr;
+
+		&:nth-child(4n+4) {
+			margin-right: 0!important;
+		}
+	}
+
+	.grid-5 {
+		@include responsiveWidth( $grid, 5, $mgr );
+		margin-right: $mgr;
+
+		&:nth-child(5n+5) {
+			margin-right: 0!important;
+		}
+	}
+// ==================
+
+// COLORS
+	$orange: #F8C27A;
+	$yellow: #FFE100;
+
+	.orange-bg {
+		background: $orange;
+	}
+
+	.yellow-bg {
+		background: $yellow;
+	}
+
+	.orange-color {
+		color: $orange;
+	}
+
+	.yellow-color {
+		color: $yellow;
+	}
 // ==================
 
 // LINKS
@@ -30,24 +101,6 @@
 		$input-search-height: 30px;
 		$form-padding: ($header-middle-height - $input-search-height) / 2;
 	// ==================
-// ==================
-
-// GRIDS
-	.grid-full {
-		width: 988px;
-		margin: 0 auto;
-	}
-	.grid-triple {
-		width: 721px;
-	}
-
-	.grid-double {
-		width: 474px;
-	}
-
-	.grid-single {
-		width: 290px;
-	}
 // ==================
 
 // GERAL
@@ -166,11 +219,7 @@
 
 	.places-list {
 		float: left;
-		margin: 0 20px 20px 0;
-
-		&:nth-child(n+4) {
-			margin-top: 20px
-		}
+		margin-bottom: 20px;
 	}
 
 	.places-list-title {
