@@ -89,20 +89,6 @@
 	$link-hover-text-decoration: underline;
 // ==================
 
-// HEADER
-	$header-middle-height: 70px;
-
-	// LOGO
-		$logo-size: 50px;
-		$logo-padding: ($header-middle-height - $logo-size) / 2;
-	// ==================
-
-	// FORM > SEARCH
-		$input-search-height: 30px;
-		$form-padding: ($header-middle-height - $input-search-height) / 2;
-	// ==================
-// ==================
-
 // GERAL
 	.container-center {
 		margin: 0 auto;
@@ -119,6 +105,18 @@
 // ==================
 
 // HEADER
+	$header-middle-height: 70px;
+
+	// LOGO
+		$logo-size: 50px;
+		$logo-padding: ($header-middle-height - $logo-size) / 2;
+	// ==================
+
+	// FORM > SEARCH
+		$input-search-height: 30px;
+		$form-padding: ($header-middle-height - $input-search-height) / 2;
+	// ==================
+	
 	.header {
 		position: fixed;
 		top: 0;
