@@ -1,84 +1,116 @@
 var mongodb         = require('mongodb');
 var MongoClient     = mongodb.MongoClient;
 var Server          = mongodb.Server;
-var mongoClient     = null;
-var db 		        = null;
-var dbName          = 'merces';
-var collectionName  = 'cat';
 
-/*
-** Salva uma nova categoria
-** @param {Object}   : dados da categoria que será adicionada
-** @return {Object} : dados da categoria adicionada
-*/
-function save( data, callback ) {
-    mongoClient = new MongoClient(new Server('localhost', 27017));
-    console.log('database opened');
+function MongoJS( dbName ){
+    this.mongoClient    = new MongoClient(new Server('localhost', 27017));
+    this.db             = null;
+    this.dbName         = dbName;
+    this.collections    = {
+        categories  : 'cat',
+        places      : 'places'
+    };
+}
 
-    mongoClient.open(function(err, mongoClient) {
+MongoJS.prototype.open = function( callback ){
+    /*
+    ** Abre uma conexão
+    ** @callback
+    */
+    var self    = this;
+    
+    self.mongoClient.open( function( err, mongoClient ){
+        if ( err ) {
+            console.log( err );
+            self.close();
+            return false;
+        }
 
-        db = mongoClient.db( dbName );
+        self.db = self.mongoClient.db( self.dbName );
+        console.log('database on');
+        callback( true );
+    });
+};
 
-        db.collection(collectionName, function(err, collection){
+MongoJS.prototype.close = function(){
+    /*
+    ** Fecha uma conexão
+    */
+    var self = this;
+
+    self.mongoClient.close();
+
+    console.log('database off');
+};
+
+MongoJS.prototype.findAll = function( collectionName, callback ){
+    /*
+    ** Retorna todos registros encontrados na collection
+    ** @param {String}      : nome da collection
+    ** @callback {Array}    : lista de registros
+    */
+    var self            = this;
+    var collectionName  = collectionName;
+
+    self.open(function( success ){
+        if ( !success ) {
+            console.log('erro no retorno da open');
+            return false;
+        }
+
+        self.db.collection(collectionName, function( err, collection ){
             if ( err ) {
-                console.log( 'collection not found' );
-                mongoClient.close();
-                console.log('database closed');
+                console.log( err );
+                self.close();
+                return false;
             }
 
-            collection.save( data, {safe : true}, function(err, returnedData){
-                if (err) {
+            collection.find().toArray( function( err, data ) {
+                if ( err ) {
                     console.log( err );
+                    self.close();
+                    return false;
                 }
-
-                mongoClient.close();
-                console.log('database closed');
-
-                callback( err, returnedData );
+                
+                self.close();
+                callback( data );
             });
         });
     });
-}
+};
 
-/*
-** Verifica se o nome já existe na collection
-** @param {String}   : nome da categoria
-** @return {Boolean}
-*/
-function nameExists( string, callback ){
-    mongoClient = new MongoClient(new Server('localhost', 27017));
-    console.log('database opened');
+MongoJS.prototype.addCategory = function( categoryData, callback ){
+    /*
+    ** Salva uma nova categoria na collection
+    ** @param {Object}      : dados da categoria
+    ** @callback {Boolean}  : success
+    */
 
-    mongoClient.open(function(err, mongoClient) {
+    var self    = this;
+    var catData = categoryData;
 
-        db = mongoClient.db( dbName );
-
-        db.collection(collectionName, function(err, collection){
+    self.open( function(){
+        self.db.collection( self.collections.categories, function( err, collection ){
             if ( err ) {
-                console.log( 'collection not found' );
-                mongoClient.close();
-                console.log('database closed');
+                console.log( err );
+                self.close();
+                return false;
             }
 
-            collection.findOne( {name : string}, function(err, data){
-                var exists = false;
-
+            collection.save( catData, {safe : true}, function( err, data ){
                 if (err) {
                     console.log( err );
+                    self.close();
+                    return false;
                 }
 
-                if ( data !== null ) {
-                    exists = true;
-                }
-
-                mongoClient.close();
-                console.log('database closed');
-
-                callback( err, exists );
+                self.close();
+                callback( true );
             });
         });
     });
-}
+};
 
-exports.save        = save;
-exports.nameExists  = nameExists;
+//var mongoInstance = new MongoJS( 'merces' );
+
+exports.MongoJS     = MongoJS;
