@@ -1,0 +1,35 @@
+@import "compass/reset";
+
+// Cat Form
+	.form-header {
+		margin-bottom: 20px;
+	}
+
+	.form-title {
+		font: bold 24px arial;
+	}
+
+	.form-description {
+		font: normal 20px arial;
+	}
+
+	.form-add-cat {
+		width: 500px;
+	}
+
+	.form-field {
+		width: 100%;
+		margin: 10px 0;
+	}
+
+	.form-label {
+		display: block;
+		float: left;
+		width: 20%;
+		font: normal 18px arial;
+	}
+
+	.form-input {
+		width: 79%;
+	}
+// ==================

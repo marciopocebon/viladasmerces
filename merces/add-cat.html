@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Add Categories</title>
+		<link rel="stylesheet" href="http://localhost/node/merces/css/index.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://localhost/node/merces/javascripts/add-cat.js"></script>
+	</head>
+	<body>
+		<header class="form-header">
+			<h1 class="form-title">Add Categories</h1>
+			<p class="form-description">Fill in the form below to add a new category.</p>
+		</header>
+		<form class="form-add-cat" action="/add-cat" method="POST" enctype="multipart/form-data">
+			<div class="form-field">
+				<label class="form-label" for="cat-name">Name</label>
+				<input class="form-input" id="cat-name" type="text" name="cat[name]" required/>	
+			</div>
+			<div class="form-field">
+				<label class="form-label" for="cat-description">Description</label>
+				<input class="form-input" id="cat-description" type="text" name="cat[description]" required />
+			</div>			
+			<div class="form-field">
+				<label class="form-label" for="cat-image">Image</label>
+				<input class="form-input" id="cat-image" type="file" accept="image/*" name="cat[image]"  />
+			</div>
+			<input type="submit" value="Add" />
+		</form>
+	</body>
+</html>
