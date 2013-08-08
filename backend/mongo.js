@@ -12,17 +12,18 @@ function MongoJS( dbName ){
     };
 }
 
-MongoJS.prototype.open = function( callback ){
+MongoJS.prototype._open         = function( callback ){
     /*
     ** Abre uma conexão
     ** @callback
     */
+
     var self    = this;
     
     self.mongoClient.open( function( err, mongoClient ){
         if ( err ) {
             console.log( err );
-            self.close();
+            self._close();
             return false;
         }
 
@@ -32,10 +33,11 @@ MongoJS.prototype.open = function( callback ){
     });
 };
 
-MongoJS.prototype.close = function(){
+MongoJS.prototype._close        = function(){
     /*
     ** Fecha uma conexão
     */
+
     var self = this;
 
     self.mongoClient.close();
@@ -43,7 +45,7 @@ MongoJS.prototype.close = function(){
     console.log('database off');
 };
 
-MongoJS.prototype.findAll = function( collectionName, callback ){
+MongoJS.prototype.findAll       = function( collectionName, callback ){
     /*
     ** Retorna todos registros encontrados na collection
     ** @param {String}      : nome da collection
@@ -52,7 +54,7 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
 
-    self.open(function( success ){
+    self._open(function( success ){
         if ( !success ) {
             console.log('erro no retorno da open');
             return false;
@@ -61,25 +63,65 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
         self.db.collection(collectionName, function( err, collection ){
             if ( err ) {
                 console.log( err );
-                self.close();
+                self._close();
                 return false;
             }
 
             collection.find().toArray( function( err, data ) {
                 if ( err ) {
                     console.log( err );
-                    self.close();
+                    self._close();
                     return false;
                 }
                 
-                self.close();
+                self._close();
                 callback( data );
             });
         });
     });
 };
 
-MongoJS.prototype.addCategory = function( categoryData, callback ){
+MongoJS.prototype.find          = function( jsonQuery, collectionName, callback ){
+    /*
+    ** Faz uma consulta genérica na collection
+    ** @param {Object}   : parametros no modelo {key:value}
+    ** @param {String}   : nome da categoria
+    ** @param {String}   : nome da collection 
+    ** @callback {Array} : lista registros encontrados
+    */
+
+    var self            = this;
+    var query           = jsonQuery;
+    var collectionName  = collectionName;
+
+    self._open(function( success ){
+        if ( !success ) {
+            console.log('erro no retorno da open');
+            return false;
+        }
+
+        self.db.collection(collectionName, function( err, collection ){
+            if ( err ) {
+                console.log( err );
+                self._close();
+                return false;
+            }
+
+            collection.find( query ).toArray( function( err, data ) {
+                if ( err ) {
+                    console.log( err );
+                    self._close();
+                    return false;
+                }
+                
+                self._close();
+                callback( data );
+            });
+        });
+    });
+};
+
+MongoJS.prototype.addCategory   = function( categoryData, callback ){
     /*
     ** Salva uma nova categoria na collection
     ** @param {Object}      : dados da categoria
@@ -89,22 +131,22 @@ MongoJS.prototype.addCategory = function( categoryData, callback ){
     var self    = this;
     var catData = categoryData;
 
-    self.open( function(){
+    self._open( function(){
         self.db.collection( self.collections.categories, function( err, collection ){
             if ( err ) {
                 console.log( err );
-                self.close();
+                self._close();
                 return false;
             }
 
             collection.save( catData, {safe : true}, function( err, data ){
                 if (err) {
                     console.log( err );
-                    self.close();
+                    self._close();
                     return false;
                 }
 
-                self.close();
+                self._close();
                 callback( true );
             });
         });
@@ -113,4 +155,4 @@ MongoJS.prototype.addCategory = function( categoryData, callback ){
 
 //var mongoInstance = new MongoJS( 'merces' );
 
-exports.MongoJS     = MongoJS;
+exports.MongoJS  = MongoJS;
