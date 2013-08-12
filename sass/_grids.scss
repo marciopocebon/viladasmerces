@@ -1,6 +1,6 @@
 @mixin responsiveWidth($grid, $columns, $margin) {
 	/*
-	**	Calcula o width de um container, baseado em um grid
+	**	Calcula o width de um container, baseado em um grid, quantidade de colunas e margin
 	**	@param 	{pixels} 	-> grid 		: o tamanho total do grid
 	**	@param 	{Integer} 	-> columns 		: quantidade de divisões que o grid terá
 	**	@param 	{Integer} 	-> margin 		: margin right/left que cada elemento tem

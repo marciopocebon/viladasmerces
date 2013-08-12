@@ -7,12 +7,12 @@ function MongoJS( dbName ){
     this.db             = null;
     this.dbName         = dbName;
     this.collections    = {
-        categories  : 'cat',
+        categories  : 'category',
         places      : 'places'
     };
 }
 
-MongoJS.prototype._open         = function( callback ){
+MongoJS.prototype._open = function( callback ){
     /*
     ** Abre uma conexão
     ** @callback
@@ -33,7 +33,7 @@ MongoJS.prototype._open         = function( callback ){
     });
 };
 
-MongoJS.prototype._close        = function(){
+MongoJS.prototype._close = function(){
     /*
     ** Fecha uma conexão
     */
@@ -45,7 +45,7 @@ MongoJS.prototype._close        = function(){
     console.log('database off');
 };
 
-MongoJS.prototype.findAll       = function( collectionName, callback ){
+MongoJS.prototype.findAll = function( collectionName, callback ){
     /*
     ** Retorna todos registros encontrados na collection
     ** @param {String}      : nome da collection
@@ -74,14 +74,14 @@ MongoJS.prototype.findAll       = function( collectionName, callback ){
                     return false;
                 }
                 
-                self._close();
                 callback( data );
+                self._close();
             });
         });
     });
 };
 
-MongoJS.prototype.find          = function( jsonQuery, collectionName, callback ){
+MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     /*
     ** Faz uma consulta genérica na collection
     ** @param {Object}   : parametros no modelo {key:value}
@@ -121,11 +121,11 @@ MongoJS.prototype.find          = function( jsonQuery, collectionName, callback 
     });
 };
 
-MongoJS.prototype.addCategory   = function( categoryData, callback ){
+MongoJS.prototype.addCategory = function( categoryData, callback ){
     /*
     ** Salva uma nova categoria na collection
     ** @param {Object}      : dados da categoria
-    ** @callback {Boolean}  : success
+    ** @callback {Boolean}  : success/error status
     */
 
     var self    = this;
@@ -152,7 +152,5 @@ MongoJS.prototype.addCategory   = function( categoryData, callback ){
         });
     });
 };
-
-//var mongoInstance = new MongoJS( 'merces' );
 
 exports.MongoJS  = MongoJS;

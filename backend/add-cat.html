@@ -3,6 +3,7 @@
 	<head>
 		<title>Add Categories</title>
 		<link rel="stylesheet" href="http://localhost/vila-das-merces/css/backend.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type="text/javascript" src="http://localhost/vila-das-merces/backend/backend.js"></script>
 	</head>
 	<body>
@@ -12,18 +13,19 @@
 		</header>
 		<form class="form-add-cat" action="/add-cat" method="POST" enctype="multipart/form-data">
 			<div class="form-field">
-				<label class="form-label" for="cat-name">Name</label>
-				<input class="form-input" id="cat-name" type="text" name="cat[name]" required/>	
+				<label class="form-label" for="category-name">Name</label>
+				<input class="form-input" id="category-name" type="text" name="category[name]"/>
 			</div>
 			<div class="form-field">
-				<label class="form-label" for="cat-description">Description</label>
-				<input class="form-input" id="cat-description" type="text" name="cat[description]" required />
+				<label class="form-label" for="category-description">Description</label>
+				<input class="form-input" id="category-description" type="text" name="category[description]"/>
 			</div>			
 			<div class="form-field">
-				<label class="form-label" for="cat-image">Image</label>
-				<input class="form-input" id="cat-image" type="file" accept="image/*" name="cat[image]"  />
+				<label class="form-label" for="category-image">Image</label>
+				<input class="form-input" id="category-image" type="file" accept="image/*" name="category[image]"  />
 			</div>
-			<input type="submit" value="Add" />
+			<input id="submit-btn" type="submit" value="Add" />
 		</form>
+		<div class="callback-container"></div>
 	</body>
 </html>
