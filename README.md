@@ -1,8 +1,10 @@
-www.bairroviladasmerces.com.br
-=============
+Source-code from business directory with information from vila das merces district.
 
-Código-fonte do site bairroviladasmerces.com.br.
-
-## utilizando
+## client
 - compass
 - require.js
+- 
+
+## server
+- node.js
+- mongodb
