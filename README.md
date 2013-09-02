@@ -1,9 +1,9 @@
 Source-code from business directory with information from vila das merces district.
 
-## client
+## client-side
 - compass
 - require.js
 
-## server
+## server-side
 - node.js
 - mongodb
