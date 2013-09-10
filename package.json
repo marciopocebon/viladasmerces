@@ -1,6 +1,6 @@
 {	
-	"name" 		 	: "merces",
-	"description"  	: "routes, mongo and server side stuff",
+	"name" 		 	: "viladasmerces",
+	"description"  	: "business directory listing",
 	"version" 	 	: "0.0.1",
 	"homepage" 		: "https://github.com/marioluan/viladasmerces",
 	"email"			: "mariosouzaluan@gmail.com",
@@ -11,14 +11,17 @@
 	},
 	"dependencies" 	: {
 		"express" : ">=3.x",
-		"mongodb" : ">=1.3"
+		"mongodb" : ">=1.3",
+		"buster"  : ">=0.6.12"
 	},
 	"license" 		: "MIT",
 	"engines" 		: {
 		"node" : ">=0.10"
 	},
-	"private" : true,
 	"scripts" : {
-		"start" : "node index.js"
-	}
+		"preinstall" 	: "gem install compass -y",
+		"start" 		: "node index.js",
+		"test"			: "buster server"
+	},
+	"private" : true
 }
