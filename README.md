@@ -1,9 +1,7 @@
-Source-code from business directory with information from vila das merces district.
+I'm developing a new webapp to host bairroviladasmerces website.
 
-## client-side
+## dependencies
 - compass
-- require.js
-
-## server-side
 - node.js
 - mongodb
+- require.js
