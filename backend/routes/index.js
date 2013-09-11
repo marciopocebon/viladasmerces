@@ -13,7 +13,7 @@ function start(){
 
 	// static HTML
 		app.get('/add-cat', function(req, res){
-			res.sendfile( '../../frontend/views/add-cat.html');
+			res.sendfile( __dirname + '/views/add-cat.html' );
 		});
 	// ==================
 

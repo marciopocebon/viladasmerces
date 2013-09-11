@@ -1,0 +1,27 @@
+PROJETO - viladasmerces
+- Login
+	request
+		.digita o username
+		.digita o password
+		.clica em ok
+		.aguarda feedback
+	response
+		.recebe o post
+		.consulta o banco
+		.retorna a chave da sessao
+		.inicia a sessao
+	pos response
+		.grava a chave da sessao no localStorage
+		.carrega o menu principal
+
+- Cadastro
+- Categoria
+	- adicionar
+	- remover
+	- editar
+	- listar
+- Empresas
+	- adicionar
+	- remover
+	- editar
+	- listar

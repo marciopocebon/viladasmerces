@@ -1,3 +1,3 @@
-var server = require('./routes/server');
+var server = require('./routes/index');
 
 server.start();

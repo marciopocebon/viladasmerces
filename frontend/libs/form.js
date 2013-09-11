@@ -133,8 +133,3 @@ Form.prototype.listen = function(){
 		}
 	});
 };
-
-$(document).ready(function(){
-	var form = new Form( '.form-add-cat' );
-	form.listen();
-});
