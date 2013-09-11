@@ -1,9 +1,10 @@
 var express = require('express');
 var app		= express();
-var mongo= require('../lib/db/mongo');
-var MongoJS= mongo.MongoJS;
+var mongo 	= require('../libs/mongo.js');
+var MongoJS = mongo.MongoJS;
 
 function start(){
+
 	var responseMessage	= { 
 		value : true
 	};
@@ -12,7 +13,7 @@ function start(){
 
 	// static HTML
 		app.get('/add-cat', function(req, res){
-			res.sendfile('./views/add-cat.html');
+			res.sendfile( '../../frontend/views/add-cat.html');
 		});
 	// ==================
 

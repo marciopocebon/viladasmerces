@@ -20,8 +20,8 @@
 		"node" : ">=0.10"
 	},
 	"scripts" : {
-		"preinstall" 	: "sudo ruby -e 'begin; require \"compass\"; rescue LoadError; system \"gem install compass\"; end'",
-		"start" 		: "node node/index.js",
+		"preinstall" 	: "sudo brew update ; brew install mongodb",
+		"start" 		: "node backend/index.js",
 		"test"			: "buster server"
 	},
 	"private" : true
