@@ -10,17 +10,18 @@
 		"url" 	: "https://github.com/marioluan/viladasmerces"
 	},
 	"dependencies" 	: {
-		"express" : ">=3.x",
-		"mongodb" : ">=1.3",
-		"buster"  : ">=0.6.12"
+		"requirejs" : ">=2.1.8",
+		"express" 	: ">=3.x",
+		"mongodb" 	: ">=1.3",
+		"buster"  	: ">=0.6.12"
 	},
 	"license" 		: "MIT",
 	"engines" 		: {
 		"node" : ">=0.10"
 	},
 	"scripts" : {
-		"preinstall" 	: "gem install compass -y",
-		"start" 		: "node index.js",
+		"preinstall" 	: "sudo ruby -e 'begin; require \"compass\"; rescue LoadError; system \"gem install compass\"; end'",
+		"start" 		: "node node/index.js",
 		"test"			: "buster server"
 	},
 	"private" : true
