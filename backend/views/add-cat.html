@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Add Categories</title>
+		<link rel="stylesheet" href="css/../../backend.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../lib/form.js"></script>
+	</head>
+	<body>
+		<header class="form-header">
+			<h1 class="form-title">Add Categories</h1>
+			<p class="form-description">Fill in the form below to add a new category.</p>
+		</header>
+		<form class="form-add-cat" action="/add-cat" method="POST" enctype="multipart/form-data">
+			<div class="form-field">
+				<label class="form-label" for="category-name">Name</label>
+				<input class="form-input" id="category-name" type="text" name="category[name]"/>
+			</div>
+			<div class="form-field">
+				<label class="form-label" for="category-description">Description</label>
+				<input class="form-input" id="category-description" type="text" name="category[description]"/>
+			</div>			
+			<div class="form-field">
+				<label class="form-label" for="category-image">Image</label>
+				<input class="form-input" id="category-image" type="file" accept="image/*" name="category[image]"  />
+			</div>
+			<input id="submit-btn" type="submit" value="Add" />
+		</form>
+		<div class="callback-container"></div>
+	</body>
+</html>
