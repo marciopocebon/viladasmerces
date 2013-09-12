@@ -1,49 +1,13 @@
 var express = require('express');
 var app		= express();
-var mongo 	= require('../libs/mongo.js');
-var MongoJS = mongo.MongoJS;
+var site 	= require('./site');
 
 function start(){
 
-	var responseMessage	= { 
-		value : true
-	};
-
 	app.use(express.bodyParser());
 
-	// static HTML
-		app.get('/add-cat', function(req, res){
-			res.sendfile( __dirname + '/views/add-cat.html' );
-		});
-	// ==================
-
-	// POST
-		app.post('/add-cat-node', function( req, res ){
-			var data = req.body;
-
-			var mongoInstance = new MongoJS('merces');
-
-			mongoInstance.addCategory(data, function( success ){
-				if ( !success ) {
-					console.log( 'cloudnt add category' );
-					responseMessage.value = false;
-				}
-
-				res.json( responseMessage );
-			});
-		});
-	// ==================
-
-	// JSON
-		app.get('/list-cat', function(req, res){
-			
-			var mongoInstance = new MongoJS('merces');
-
-			mongoInstance.findAll('category', function( data ){
-				res.json( data );
-			});
-		});
-	// ==================
+	// root
+	app.get('/', site.index);
 
 	// starta o server
 	app.listen(8080, function(){
