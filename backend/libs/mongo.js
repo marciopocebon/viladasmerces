@@ -3,12 +3,16 @@ var MongoClient     = mongodb.MongoClient;
 var Server          = mongodb.Server;
 
 function MongoJS( dbName ){
+    /*
+    ** Esta classe serve para manipular conexao com banco e fazer queries genericas em collections
+    */
     this.mongoClient    = new MongoClient(new Server('localhost', 27017));
     this.db             = null;
     this.dbName         = dbName;
     this.collections    = {
         categories  : 'category',
-        places      : 'places'
+        places      : 'places',
+        users       : 'users'
     };
 }
 
@@ -43,6 +47,74 @@ MongoJS.prototype._close = function(){
     self.mongoClient.close();
 
     console.log('database off');
+};
+
+MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
+    /*
+    ** Salva um novo item na collection
+    ** @param {Object}      : query
+    ** @param {String}      : nome da collection
+    ** @callback {Boolean}  : success/error status
+    */
+
+    var self            = this;
+    var collectionName  = collectionName;
+    var query           = jsonQuery;
+
+    self._open( function(){
+        self.db.collection( collectionName, function( err, collection ){
+            if ( err ) {
+                console.log( err );
+                self._close();
+                return false;
+            }
+
+            collection.save( query, {safe : true}, function( err, affected_rows ){
+                if (err) {
+                    console.log( err );
+                    self._close();
+                    return false;
+                }
+
+                self._close();
+                callback( true );
+            });
+        });
+    });
+};
+
+MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
+    /*
+    ** Deleta um documento da collection
+    ** @param {Object} : query
+    ** @param {String} : nome da collection
+    ** @callback {Function} : o documento foi deletado?
+    */
+
+    var self            = this;
+    var collectionName  = collectionName;
+    var query           = jsonQuery;
+
+    self._open( function(){
+        self.db.collection( collectionName, function( err, collection ){
+            if ( err ) {
+                console.log( err );
+                self._close();
+                return false;
+            }
+
+            collection.remove( query, true, function( err, affected_rows ){
+                if (err) {
+                    console.log( err );
+                    self._close();
+                    return false;
+                }
+
+                self._close();
+                callback( true );
+            });
+        });
+    });
 };
 
 MongoJS.prototype.findAll = function( collectionName, callback ){
@@ -85,7 +157,6 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     /*
     ** Faz uma consulta genérica na collection
     ** @param {Object}   : parametros no modelo {key:value}
-    ** @param {String}   : nome da categoria
     ** @param {String}   : nome da collection 
     ** @callback {Array} : lista registros encontrados
     */
@@ -116,38 +187,6 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
                 
                 self._close();
                 callback( data );
-            });
-        });
-    });
-};
-
-MongoJS.prototype.addCategory = function( categoryData, callback ){
-    /*
-    ** Salva uma nova categoria na collection
-    ** @param {Object}      : dados da categoria
-    ** @callback {Boolean}  : success/error status
-    */
-
-    var self    = this;
-    var catData = categoryData;
-
-    self._open( function(){
-        self.db.collection( self.collections.categories, function( err, collection ){
-            if ( err ) {
-                console.log( err );
-                self._close();
-                return false;
-            }
-
-            collection.save( catData, {safe : true}, function( err, data ){
-                if (err) {
-                    console.log( err );
-                    self._close();
-                    return false;
-                }
-
-                self._close();
-                callback( true );
             });
         });
     });
