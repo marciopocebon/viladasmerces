@@ -10,6 +10,8 @@ exports.index = function(req,res){
 		image 	: 'http://www.aaerd.com.br/titulo.jpg'
 	}
 
+	var b = 'aa';
+
 	a.insert( newData, collection, function( success ){
 		console.log( 'success -> ', success );
 		res.send( 'opa!' );
