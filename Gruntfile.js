@@ -24,16 +24,19 @@ module.exports = function( grunt ){
 			}
 		},
 		shell: {
-			reloadServer : {
-				options : {
+			startServer : {
+				options: {
 					stdout: true
 				},
-				command : 'npm stop ; sleep 5 ; npm start ;',
+				command : [
+					'<%= pkg.scripts.start %>',
+					'<%= pkg.scripts.prestart %>'
+				].join('&')
 			}
 		},
 		watch : {
 			files : [ 'backend/routes/*' ],
-			tasks : [ 'server' ]
+			tasks : [ 'backend' ]
 		}
 	});
 
@@ -42,8 +45,7 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-shell');
 
-	grunt.registerTask( 'default', 	['concat', 'uglify'] );
+	grunt.registerTask( 'dev',	 	['shell:startServer'] );
 	grunt.registerTask( 'backend', 	['concat:backend', 'uglify:backend'] );
 	grunt.registerTask( 'frontend', ['concat:frontend', 'uglify:frontend'] );
-	grunt.registerTask( 'server', 	['shell:reloadServer'] );
 };

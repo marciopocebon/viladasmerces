@@ -18,8 +18,10 @@
     "node": ">=0.10"
   },
   "scripts": {
-    "start": "sudo mongod --dbpath /srv/www/data/db/ & ; node backend/index.js ;",
-    "stop": "killall node"
+    "prestart"  : "sudo mongod --quiet --dbpath data/db",
+    "start"     : "node backend/index.js",
+    "prestop"   : "killall mongo",
+    "stop"      : "killall node"
   },
   "private": true,
   "devDependencies": {
