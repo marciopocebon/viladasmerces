@@ -23,17 +23,27 @@ module.exports = function( grunt ){
 				}
 			}
 		},
+		shell: {
+			reloadServer : {
+				options : {
+					stdout: true
+				},
+				command : 'npm stop ; sleep 5 ; npm start ;',
+			}
+		},
 		watch : {
 			files : [ 'backend/routes/*' ],
-			tasks : [ '<%= pkg.scripts.stop %>' ]
+			tasks : [ 'server' ]
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-shell');
 
-	grunt.registerTask( 'default', ['concat', 'uglify'] );
-	grunt.registerTask( 'backend', ['concat:backend', 'uglify:backend'] );
+	grunt.registerTask( 'default', 	['concat', 'uglify'] );
+	grunt.registerTask( 'backend', 	['concat:backend', 'uglify:backend'] );
 	grunt.registerTask( 'frontend', ['concat:frontend', 'uglify:frontend'] );
+	grunt.registerTask( 'server', 	['shell:reloadServer'] );
 };

@@ -18,7 +18,7 @@
     "node": ">=0.10"
   },
   "scripts": {
-    "start": "node backend/index.js",
+    "start": "sudo mongod --dbpath /srv/www/data/db/ & ; node backend/index.js ;",
     "stop": "killall node"
   },
   "private": true,

@@ -1,3 +1,4 @@
-var server = require('./routes/index');
+"use strict";
 
+var server = require('./routes/index');
 server.start();

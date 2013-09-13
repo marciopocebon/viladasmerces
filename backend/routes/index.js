@@ -1,9 +1,10 @@
-var express 	= require('express');
-var app			= express();
-var site 		= require('./site');
-var categories 	= require('./categories');
-
-function start(){
+exports.start = function(){
+	"use strict";
+	
+	var express 	= require('express');
+	var app			= express();
+	var site 		= require('./site');
+	var categories 	= require('./categories');
 
 	app.use(express.bodyParser());
 
@@ -17,6 +18,4 @@ function start(){
 	app.listen(8080, function(){
 		console.log('server has started on port:8080');
 	});
-}
-
-exports.start = start;
+};

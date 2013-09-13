@@ -1,4 +1,4 @@
-var MongoJSCategory = require('../libs/mongo-categories').MongoJSCategory;
+var MongoJSCategory = require('../libs/src/mongo-categories').MongoJSCategory;
 
 exports.list = function( req, res ){
 	console.log( req.params );

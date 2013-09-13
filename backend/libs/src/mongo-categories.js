@@ -1,4 +1,4 @@
-var MongoJS = require('../libs/mongo').MongoJS;
+var MongoJS = require('./mongo').MongoJS;
 
 function MongoJSCategory(){
 	/*
