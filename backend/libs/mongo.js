@@ -6,6 +6,7 @@ function MongoJS( dbName ){
     /*
     ** Esta classe serve para manipular conexao com banco e fazer queries genericas em collections
     */
+    
     this.mongoClient    = new MongoClient(new Server('localhost', 27017));
     this.db             = null;
     this.dbName         = dbName;
