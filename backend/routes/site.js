@@ -10,13 +10,13 @@ exports.index = function(req,res){
 		image 	: 'http://www.aaerd.com.br/titulo.jpg'
 	}
 
-	// a.insert( newData, collection, function( success ){
-	// 	console.log( 'success -> ', success );
-	// 	res.send( 'opa!' );
-	// });
-
-	a.remove( newData, collection, function( success ){
+	a.insert( newData, collection, function( success ){
 		console.log( 'success -> ', success );
 		res.send( 'opa!' );
 	});
+
+	// a.remove( newData, collection, function( success ){
+	// 	console.log( 'success -> ', success );
+	// 	res.send( 'opa!' );
+	// });
 };
