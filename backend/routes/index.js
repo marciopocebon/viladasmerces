@@ -10,12 +10,17 @@ exports.start = function(){
 	// root
 	app.get('/', site.index);
 
-	// categories
+	// // categories
 	app.get('/categories/', categories.findAll);
-	app.get('/categories/add', categories.add);
+	// app.get('/categories/:id', categories.find);
+
+	// app.post('/categories/', categories.add);
+	// app.put('/categories/:id', categories.add);
 
 	// starta o server
 	app.listen(8080, function(){
 		console.log('server has started on port:8080');
 	});
 };
+
+// fachada repositorio - editor
