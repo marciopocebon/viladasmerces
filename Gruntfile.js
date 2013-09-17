@@ -28,10 +28,7 @@ module.exports = function( grunt ){
 				options: {
 					stdout: true
 				},
-				command : [
-					'<%= pkg.scripts.start %>',
-					'<%= pkg.scripts.prestart %>'
-				].join('&')
+				command : '<%= pkg.scripts.start %>'
 			}
 		},
 		watch : {
@@ -46,6 +43,6 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks('grunt-shell');
 
 	grunt.registerTask( 'dev',	 	['shell:startServer'] );
-	grunt.registerTask( 'backend', 	['concat:backend', 'uglify:backend'] );
-	grunt.registerTask( 'frontend', ['concat:frontend', 'uglify:frontend'] );
+	//grunt.registerTask( 'backend', 	['concat:backend', 'uglify:backend'] );
+	//grunt.registerTask( 'frontend', ['concat:frontend', 'uglify:frontend'] );
 };
