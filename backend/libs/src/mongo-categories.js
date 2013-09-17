@@ -7,24 +7,55 @@ function MongoJSCategory(){
 
 	this._super 		= new MongoJS( 'merces' );
 	this.collectionName = 'category';
+	this.schema 		= {
+		name 	: true,
+		phone 	: true,
+		image 	: true
+	};
 }
 
-MongoJSCategory.prototype.add = function( jsonquery, callback ){
+MongoJSCategory.prototype.isQueryValid = function( jsonQuery ){
+	/*
+	** Verifica se o schema usado na query é valido
+	** @param {Object} : query para consulta no mongo em formato json
+	** @return {Boolean} : a query é valida?
+	*/
+
+	var query 	= jsonQuery;
+	var length 	= Object.keys( query ).length;
+
+	if ( length < 1 ) return false;
+
+	for( var queryKey in query ){
+		if ( typeof this.schema[queryKey] === 'undefined' ) return false;
+	}
+
+	return true;
+};
+
+MongoJSCategory.prototype.add = function( jsonQuery, callback ){
 	/*
 	** Adiciona uma categoria na collection
 	** @param {Object} 		: query
 	** @callback {Function} : a categoria foi adicionada?
 	*/
 
-	var self 	= this;
-	var query 	= jsonquery;
+	var self 			= this;
+	var query 			= jsonQuery;
+	var isQueryValid 	= self.isQueryValid( query );
+
+	// valida a query antes de executar o insert
+	if ( !isQueryValid ){
+		callback(false);
+		return;
+	}
 
 	self._super.insert( query, self.collectionName, function( status ){
 		callback( status );
 	});
 };
 
-MongoJSCategory.prototype.remove = function( jsonquery, callback ){
+MongoJSCategory.prototype.remove = function( jsonQuery, callback ){
 	/*
 	** Remove uma categoria da collection
 	** @param {Object} 		: query
@@ -32,14 +63,14 @@ MongoJSCategory.prototype.remove = function( jsonquery, callback ){
 	*/
 
 	var self 	= this;
-	var query 	= jsonquery;
+	var query 	= jsonQuery;
 
 	self._super.remove( query, self.collectionName, function( status ){
 		callback( status );
 	});
 };
 
-MongoJSCategory.prototype.list = function( callback ){
+MongoJSCategory.prototype.findAll = function( callback ){
 	/*
 	** Lista as categorias da collection
 	** @callback {Function} : json
@@ -47,8 +78,22 @@ MongoJSCategory.prototype.list = function( callback ){
 
 	var self 	= this;
 
-	self._super.findAll( self.collectionName, function( status ){
-		callback( status );
+	self._super.findAll( self.collectionName, function( data ){
+		callback( data );
+	});
+};
+
+MongoJSCategory.prototype.find = function( jsonQuery, callback ){
+	/*
+	** Faz uma query na collection
+	** @callback {Function} : json
+	*/
+
+	var self 	= this;
+	var query 	= jsonQuery;
+
+	self._super.find( query, self.collectionName, function( data ){
+		callback( data );
 	});
 };
 
