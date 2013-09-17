@@ -16,8 +16,17 @@ exports.add = function( req, res ) {
 	**  cadastra uma nova categoria
 	*/
 	var query = url.parse( req.url, true ).query;
-	
-	categories.add(query, function( status ){
-		res.send( status );
+	categories.dataExists( query, function( status ){
+		if ( !status ) {
+			categories.add(query, function( status ){
+				res.send( status );
+			});
+		} else {
+			res.send( 'nothing here' );
+		}
 	});
 };
+
+// TODO - criar os metodos abaixo
+exports.remove = function(){};
+exports.update = function(){};

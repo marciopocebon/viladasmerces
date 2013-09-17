@@ -5,6 +5,7 @@ var Server          = mongodb.Server;
 function MongoJS( dbName ){
     /*
     ** Esta classe serve para manipular conexao com banco e fazer queries genericas em collections
+    ** @param {String} : nome do banco de dados
     */
     
     this.mongoClient    = new MongoClient(new Server('localhost', 27017));

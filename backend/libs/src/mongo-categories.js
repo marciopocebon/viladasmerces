@@ -14,6 +14,22 @@ function MongoJSCategory(){
 	};
 }
 
+MongoJSCategory.prototype.dataExists = function( query, callback ){
+	/*
+	** Verifica se uma determinada categoria já existe no banco
+	** @param {Object} 		: query para consulta no mongo em formato json
+	** @callback {Boolean} 	: a categoria já existe?
+	*/
+
+	var self = this;
+
+	self._super.find( query, self.collectionName, function( data ){
+		var exists = Object.keys( data ).length > 0 ? true : false;
+		
+		callback( exists );
+	});
+};
+
 MongoJSCategory.prototype.isQueryValid = function( jsonQuery ){
 	/*
 	** Verifica se o schema usado na query é valido
@@ -21,11 +37,10 @@ MongoJSCategory.prototype.isQueryValid = function( jsonQuery ){
 	** @return {Boolean} : a query é valida?
 	*/
 
-	var query 			= jsonQuery;
-	var queryLength 	= Object.keys( query ).length;
-	var schemaLength 	= Object.keys( this.schema ).length;
-
-	console.log( queryLength, schemaLength );
+	var self 				= this;
+	var query 				= jsonQuery;
+	var queryLength 		= Object.keys( query ).length;
+	var schemaLength 		= Object.keys( self.schema ).length;
 
 	if ( queryLength !== schemaLength ) return false;
 
