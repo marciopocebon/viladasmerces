@@ -21,10 +21,13 @@ MongoJSCategory.prototype.isQueryValid = function( jsonQuery ){
 	** @return {Boolean} : a query é valida?
 	*/
 
-	var query 	= jsonQuery;
-	var length 	= Object.keys( query ).length;
+	var query 			= jsonQuery;
+	var queryLength 	= Object.keys( query ).length;
+	var schemaLength 	= Object.keys( this.schema ).length;
 
-	if ( length < 1 ) return false;
+	console.log( queryLength, schemaLength );
+
+	if ( queryLength !== schemaLength ) return false;
 
 	for( var queryKey in query ){
 		if ( typeof this.schema[queryKey] === 'undefined' ) return false;
