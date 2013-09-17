@@ -1,5 +1,4 @@
 exports.start = function(){
-	"use strict";
 	
 	var express 	= require('express');
 	var app			= express();
@@ -12,7 +11,8 @@ exports.start = function(){
 	app.get('/', site.index);
 
 	// categories
-	app.all('/categories/:pizzarias', categories.list);
+	app.get('/categories/', categories.findAll);
+	app.get('/categories/add', categories.add);
 
 	// starta o server
 	app.listen(8080, function(){
