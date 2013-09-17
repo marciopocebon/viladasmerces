@@ -5,7 +5,6 @@
 # mongodb
 # nodejs
 # npm
-# git - x
 
 echo '# app dependencies:  '
 
@@ -49,22 +48,4 @@ else
 	sudo apt-get install npm -y
 fi
 
-# # git
-# installed_status=$( dpkg -s git | grep Status )
-# if [[ $installed_status == *'install'* ]] ; then
-# 	echo '[git] -> already installed'
-
-# 	# repo
-# 	repo_exists=$( cd /var/www/ | ls | grep -i viladasmerces )
-# 	if [ $repo_exists == 'viladasmerces' ] ; then
-# 		echo '[git] -> repo already downloaded'
-# 	else
-# 		sudo git clone https://github.com/marioluan/viladasmerces.git
-# 	fi
-# else
-# 	echo '[git] -> installing...'
-# 	sudo apt-get install git -y && cd /var/www/ && sudo git clone https://github.com/marioluan/viladasmerces.git
-# fi
-
-echo '  '
 echo 'OK. Finished installing app dependencies!'
