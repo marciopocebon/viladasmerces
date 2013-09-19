@@ -23,3 +23,5 @@ exports.start = function(){
 		console.log('server has started on port:8080');
 	});
 };
+
+// fachada repositorio - editor
