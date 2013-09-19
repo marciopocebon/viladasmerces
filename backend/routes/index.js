@@ -11,8 +11,12 @@ exports.start = function(){
 	app.get('/', site.index);
 
 	// categories
-	app.get('/categories/', categories.findAll);
-	app.get('/categories/add', categories.add);
+	// TODO
+	// trocar rotas para REST ( PUT, DELETE, PUSH, etc )
+	app.get('/categories/', 		categories.findAll);
+	app.get('/categories/find', 	categories.find);
+	app.get('/categories/insert', 	categories.insert);
+	app.get('/categories/remove', 	categories.remove);
 
 	// starta o server
 	app.listen(8080, function(){
