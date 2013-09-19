@@ -24,13 +24,14 @@ MongoJS.prototype._open = function( callback ){
     ** @callback
     */
 
-    var self    = this;
+    var self = this;
     
     self.mongoClient.open( function( err, mongoClient ){
         if ( err ) {
             console.log( err );
             self._close();
-            return false;
+            callback( false );
+            return;
         }
 
         self.db = self.mongoClient.db( self.dbName );
@@ -56,30 +57,34 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     ** Salva um novo item na collection
     ** @param {Object}      : query
     ** @param {String}      : nome da collection
-    ** @callback {Boolean}  : success/error status
+    ** @callback {Boolean}  : os dados foram inseridos na collection?
     */
 
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
+    var dataRemoved;
 
     self._open( function(){
         self.db.collection( collectionName, function( err, collection ){
             if ( err ) {
                 console.log( err );
                 self._close();
-                return false;
+                callback( false );
+                return;
             }
 
             collection.save( query, {safe : true}, function( err, affected_rows ){
                 if (err) {
                     console.log( err );
                     self._close();
-                    return false;
+                    callback( false );
+                    return;
                 }
 
+                dataRemoved = affected_rows > 0 ? true : false;
                 self._close();
-                callback( true );
+                callback( dataRemoved );
             });
         });
     });
@@ -88,32 +93,36 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
 MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
     /*
     ** Deleta um documento da collection
-    ** @param {Object} : query
-    ** @param {String} : nome da collection
+    ** @param {Object}      : query
+    ** @param {String}      : nome da collection
     ** @callback {Function} : o documento foi deletado?
     */
 
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
+    var dataRemoved;
 
     self._open( function(){
         self.db.collection( collectionName, function( err, collection ){
             if ( err ) {
                 console.log( err );
                 self._close();
-                return false;
+                callback( false );
+                return;
             }
 
             collection.remove( query, true, function( err, affected_rows ){
                 if (err) {
                     console.log( err );
                     self._close();
-                    return false;
+                    callback( false );
+                    return;
                 }
 
+                dataRemoved = affected_rows > 0 ? true : false;
                 self._close();
-                callback( true );
+                callback( dataRemoved );
             });
         });
     });
@@ -131,25 +140,28 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
     self._open(function( success ){
         if ( !success ) {
             console.log('erro no retorno da open');
-            return false;
+            callback( false );
+            return;
         }
 
         self.db.collection(collectionName, function( err, collection ){
             if ( err ) {
                 console.log( err );
                 self._close();
-                return false;
+                callback( false );
+                return;
             }
 
             collection.find().toArray( function( err, data ) {
                 if ( err ) {
                     console.log( err );
                     self._close();
-                    return false;
+                    callback( false );
+                    return;
                 }
                 
-                callback( data );
                 self._close();
+                callback( data );
             });
         });
     });
@@ -170,21 +182,24 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     self._open(function( success ){
         if ( !success ) {
             console.log('erro no retorno da open');
-            return false;
+            callback( false );
+            return;
         }
 
         self.db.collection(collectionName, function( err, collection ){
             if ( err ) {
                 console.log( err );
                 self._close();
-                return false;
+                callback( false );
+                return;
             }
 
             collection.find( query ).toArray( function( err, data ) {
                 if ( err ) {
                     console.log( err );
                     self._close();
-                    return false;
+                    callback( false );
+                    return;
                 }
                 
                 self._close();
