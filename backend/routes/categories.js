@@ -27,17 +27,9 @@ exports.insert = function( req, res ) {
 	**  cadastra uma nova categoria
 	*/
 	var query = url.parse( req.url, true ).query;
-	// verifica se a categoria já existe no banco
-	categories.dataExists( query, function( exists ){
-		// se ainda nao existir, cadastra uma nova
-		if ( !exists ) {
-			categories.insert(query, function( status ){
-				res.send( status );
-				return;
-			});
-		}
-		
-		res.send( false );
+	
+	categories.insert(query, function( status ){
+		res.send( status );
 	});
 };
 
@@ -46,7 +38,6 @@ exports.remove = function( req, res ){
 	/*
 	**  remove uma categoria
 	*/
-
 	var query = url.parse( req.url, true ).query;
 
 	categories.remove( query, function( status ){
