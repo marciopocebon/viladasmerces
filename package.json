@@ -18,7 +18,7 @@
     "node": ">=0.10"
   },
   "scripts": {
-    "prestart"  : "sudo mongod --quiet &",
+    "prestart"  : "sudo mongod --quiet --dbpath data/db &",
     "start"     : "node backend/index.js",
     "prestop"   : "sudo killall -r mongo &",
     "stop"      : "sudo killall -r node"
