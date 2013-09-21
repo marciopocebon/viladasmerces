@@ -24,18 +24,26 @@ MongoJSCategory.prototype.insert = function( jsonQuery, callback ){
 
 	var self 				= this;
 	var query 				= jsonQuery;
-	var isSchemaValid 		= self.isSchemaValid( query );
-	var isSchemaComplete 	= self.isSchemaComplete( query );
+	var isSchemaValid 		= self._super.isSchemaValid( query, self.schema );
+	var isSchemaComplete 	= self._super.isSchemaComplete( query, self.schema );
 
-	// valida o schema antes de executar o insert
+	// valida a query
 	if ( !isSchemaValid || !isSchemaComplete ){
 		callback(false);
 		return;
 	}
-	
-	// insere a categoria no banco
-	self._super.insert( query, self.collectionName, function( status ){
-		callback( status );
+
+	// verifica se o dado já existe na collection
+	self._super.dataExists( query, self.collectionName, function( exists ){
+		if ( exists ) {
+			callback( false );
+			return;
+		}
+
+		// insere a categoria no banco
+		self._super.insert( query, self.collectionName, function( status ){
+			callback( status );
+		});
 	});
 };
 
@@ -48,7 +56,7 @@ MongoJSCategory.prototype.remove = function( jsonQuery, callback ){
 
 	var self 				= this;
 	var query 				= jsonQuery;
-	var queryHasPrimaryKey 	= self.queryHasPrimaryKey( query );
+	var queryHasPrimaryKey 	= self._super.queryHasPrimaryKey( query, self.primaryKey );
 
 	// verifica se a primary key foi passada
 	if ( !queryHasPrimaryKey ) {
@@ -56,7 +64,6 @@ MongoJSCategory.prototype.remove = function( jsonQuery, callback ){
 		return;
 	}
 
-	// remove a categoria
 	self._super.remove( query, self.collectionName, function( status ){
 		callback( status );
 	});
@@ -79,12 +86,12 @@ MongoJSCategory.prototype.find = function( jsonQuery, callback ){
 	/*
 	** Faz uma query na collection
 	** @param 		{Object} 		: query a ser feita no mongo
-	** @callback 	{Array<Object>} : lista de objetos encontrados na collection
+	** @callback 	{Array<Object>} : documentos encontrados na collection
 	*/
 
-	var self 			= this;
-	var query 			= jsonQuery;
-	var isSchemaValid 	= self.isSchemaValid( query );
+	var self 				= this;
+	var query 				= jsonQuery;
+	var isSchemaValid 		= self._super.isSchemaValid( query, self.schema );
 
 	// valida o schema antes de executar o insert
 	if ( !isSchemaValid ){
@@ -95,73 +102,6 @@ MongoJSCategory.prototype.find = function( jsonQuery, callback ){
 	self._super.find( query, self.collectionName, function( data ){
 		callback( data );
 	});
-};
-
-MongoJSCategory.prototype.dataExists = function( jsonQuery, callback ){
-	/*
-	** Verifica se uma determinada categoria já existe no banco
-	** @param 		{Object} 	: query para consulta no mongo em formato json
-	** @callback 	{Boolean} 	: a categoria já existe?
-	*/
-
-	var self 				= this;
-	var query 				= jsonQuery;
-	var queryByPrimaryKey 	= { name : query.name };
-
-	self.find( queryByPrimaryKey, function( data ){
-		var dataExists = Object.keys( data ).length > 0 ? true : false;
-		callback( dataExists );
-	});
-};
-
-MongoJSCategory.prototype.isSchemaValid = function( jsonQuery ){
-	/*
-	** Verifica se o schema usado na query é valido
-	** @param 	{Object} 	: query para consulta no mongo em formato json
-	** @return 	{Boolean} 	: a query é valida?
-	*/
-
-	var self 				= this;
-	var query 				= jsonQuery;
-
-	// verifica se as keys usadas na query fazem parte do schema do mongo
-	for( var queryKey in query ){
-		if ( typeof this.schema[queryKey] === 'undefined' ) return false;
-	}
-
-	return true;
-};
-
-MongoJSCategory.prototype.isSchemaComplete = function( jsonQuery ){
-	/*
-	** Verifica se a query contem todos os campos do schema
-	** @param {Object} 		: query para consulta no mongo em formato json
-	** @return {Boolean} 	: a query possui todos os campos?
-	*/
-
-	var self 				= this;
-	var query 				= jsonQuery;
-	var queryLength 		= Object.keys( query ).length;
-	var schemaLength 		= Object.keys( self.schema ).length;
-
-	if ( queryLength !== schemaLength ) return false;
-
-	return true;
-};
-
-MongoJSCategory.prototype.queryHasPrimaryKey = function( jsonQuery ){
-	/*
-	** Verifica se a primary key consta na query
-	** @param {Object} 		: query
-	** @return {Boolean} 	: a query cotem a primary key?
-	*/
-
-	var self = this;
-	var query = jsonQuery;
-
-	if ( typeof query[ self.primaryKey ] !== 'undefined' ) return true;
-
-	return false;
 };
 
 exports.MongoJSCategory = MongoJSCategory;

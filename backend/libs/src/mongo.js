@@ -63,7 +63,7 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
-    var dataRemoved;
+    var success;
 
     self._open( function(){
         self.db.collection( collectionName, function( err, collection ){
@@ -74,7 +74,7 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
                 return;
             }
 
-            collection.save( query, {safe : true}, function( err, affected_rows ){
+            collection.save( query, {safe : true}, function( err, data ){
                 if (err) {
                     console.log( err );
                     self._close();
@@ -82,9 +82,9 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
                     return;
                 }
 
-                dataRemoved = affected_rows > 0 ? true : false;
+                success = Object.keys( data ).length > 0 ? true : false;
                 self._close();
-                callback( dataRemoved );
+                callback( success );
             });
         });
     });
@@ -207,6 +207,79 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
             });
         });
     });
+};
+
+MongoJS.prototype.dataExists = function( jsonQuery, collectionName, callback ){
+    /*
+    ** Verifica se um documento já existe na collection a partir de uma query
+    ** @param       {Object}    : query para consulta no mongo em formato json
+    ** @param       {String}    : nome da collection
+    ** @callback    {Boolean}   : o documento já existe?
+    */
+
+    var self       = this;
+    var query      = jsonQuery;
+    var collection = collectionName;         
+
+    self.find( query, collection, function( data ){
+        var exists = Object.keys( data ).length > 0 ? true : false;
+        callback( exists );
+    });
+};
+
+MongoJS.prototype.isSchemaValid = function( jsonQuery, schemaCollection ){
+    /*
+    ** Verifica se as keys passadas na query fazem parte do schema da collection
+    ** @param   {Object}    : query
+    ** @param   {Object}    : schema
+    ** @return  {Boolean}   : a query é valida?
+    */
+
+    var self    = this;
+    var query   = jsonQuery;
+    var schema  = schemaCollection;
+
+    for( var key in query ){
+        if ( typeof schema[ key ] === 'undefined' ) return false;
+    }
+
+    return true;
+};
+
+MongoJS.prototype.isSchemaComplete = function( jsonQuery, schemaCollection ){
+    /*
+    ** Verifica se a query contem a mesma quantidade de campos que o schema da collection
+    ** @param {Object}      : query
+    ** @param {Object}      : schema
+    ** @return {Boolean}    : a query possui todos os campos?
+    */
+
+    var self         = this;
+    var query        = jsonQuery;
+    var schema       = schemaCollection;
+    var queryLength  = Object.keys( query ).length;
+    var schemaLength = Object.keys( schema ).length;
+
+    if ( queryLength !== schemaLength ) return false;
+
+    return true;
+};
+
+MongoJS.prototype.queryHasPrimaryKey = function( jsonQuery, primaryKeyCollection ){
+    /*
+    ** Verifica se a primary key consta na query
+    ** @param {Object}      : query
+    ** @param {String}      : nome da primary da collection
+    ** @return {Boolean}    : a query cotem a primary key?
+    */
+
+    var self        = this;
+    var query       = jsonQuery;
+    var primaryKey  = primaryKeyCollection;
+
+    if ( typeof query[ primaryKey ] !== 'undefined' ) return true;
+
+    return false;
 };
 
 exports.MongoJS  = MongoJS;
