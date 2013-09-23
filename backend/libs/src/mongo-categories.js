@@ -2,7 +2,7 @@ var MongoJS = require('./mongo').MongoJS;
 
 function MongoJSCategory(){
 	/*
-	**  Esta classe serve para fazer CRUD com categorias
+	**  Esta classe serve para fazer CRUD na collection categorias
 	*/
 
 	this._super 		= new MongoJS( 'merces' );
@@ -22,19 +22,19 @@ MongoJSCategory.prototype.insert = function( jsonQuery, callback ){
 	** @callback 	{Boolean} 	: a categoria foi adicionada?
 	*/
 
-	var self 				= this;
-	var query 				= jsonQuery;
-	var isSchemaValid 		= self._super.isSchemaValid( query, self.schema );
-	var isSchemaComplete 	= self._super.isSchemaComplete( query, self.schema );
+	var self 			= this;
+	var query 			= jsonQuery;
+	var isQueryValid 	= false;
 
 	// valida a query
-	if ( !isSchemaValid || !isSchemaComplete ){
+	isQueryValid = self._super.isQueryValid( query, self.schema, self.primaryKey );
+	if ( !isQueryValid ){
 		callback(false);
 		return;
 	}
 
-	// verifica se o dado já existe na collection
-	self._super.dataExists( query, self.collectionName, function( exists ){
+	// verifica se os dados já existe na collection
+	self._super.dataExists( query, self.primaryKey, self.collectionName, function( exists ){
 		if ( exists ) {
 			callback( false );
 			return;
@@ -64,6 +64,7 @@ MongoJSCategory.prototype.remove = function( jsonQuery, callback ){
 		return;
 	}
 
+	// remove a categoria do banco
 	self._super.remove( query, self.collectionName, function( status ){
 		callback( status );
 	});
