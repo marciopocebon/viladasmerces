@@ -11,11 +11,6 @@ function MongoJS( dbName ){
     this.mongoClient    = new MongoClient(new Server('localhost', 27017));
     this.db             = null;
     this.dbName         = dbName;
-    this.collections    = {
-        categories  : 'category',
-        places      : 'places',
-        users       : 'users'
-    };
 }
 
 MongoJS.prototype._open = function( callback ){
@@ -209,19 +204,25 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     });
 };
 
-MongoJS.prototype.dataExists = function( jsonQuery, collectionName, callback ){
+MongoJS.prototype.dataExists = function( jsonQuery, primaryKeyCollection, collectionName, callback ){
     /*
-    ** Verifica se um documento já existe na collection a partir de uma query
+    ** Verifica se um documento já existe na collection
     ** @param       {Object}    : query para consulta no mongo em formato json
+    ** @param       {String}    : nome da primary key da collection
     ** @param       {String}    : nome da collection
     ** @callback    {Boolean}   : o documento já existe?
     */
 
-    var self       = this;
-    var query      = jsonQuery;
-    var collection = collectionName;         
+    var self                = this;
+    var query               = jsonQuery;
+    var primaryKey          = primaryKeyCollection;
+    var collection          = collectionName;
+    var queryByPrimaryKey   = {};
 
-    self.find( query, collection, function( data ){
+    // monta a query somente com a primary key e seu valor
+    queryByPrimaryKey[ primaryKeyCollection ] = jsonQuery[ primaryKeyCollection ];
+
+    self.find(queryByPrimaryKey, collection, function( data ){
         var exists = Object.keys( data ).length > 0 ? true : false;
         callback( exists );
     });
@@ -280,6 +281,35 @@ MongoJS.prototype.queryHasPrimaryKey = function( jsonQuery, primaryKeyCollection
     if ( typeof query[ primaryKey ] !== 'undefined' ) return true;
 
     return false;
+};
+
+MongoJS.prototype.isQueryValid = function( jsonQuery, schemaCollection, primaryKeyCollection ) {
+    /*
+    ** Valida uma query
+    ** @param {Object} : query
+    ** @param {Object} : schema da collection
+    ** @param {String} : nome da primary da collection
+    ** @return {Boolean} : a query é valida?
+    */
+
+    var self                = this;
+    var query               = jsonQuery;
+    var schema              = schemaCollection;
+    var primaryKey          = primaryKeyCollection;
+    var isSchemaValid       = false;
+    var isSchemaComplete    = false;
+    var queryHasPrimaryKey  = false;
+
+    // valida a query
+    isSchemaValid       = self.isSchemaValid( query, schema );
+    isSchemaComplete    = self.isSchemaComplete( query, schema );
+    queryHasPrimaryKey  = self.queryHasPrimaryKey( query, primaryKey );
+
+    if ( !isSchemaValid || !isSchemaComplete || !queryHasPrimaryKey ){
+        return false;
+    }
+
+    return true;
 };
 
 exports.MongoJS  = MongoJS;
