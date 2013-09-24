@@ -18,10 +18,8 @@
     "node": ">=0.10"
   },
   "scripts": {
-    "prestart"  : "sudo service apache2 start && sudo mongod --quiet &",
-    "start"     : "node /srv/www/viladasmerces/backend/index.js &",
-    "prestop"   : "sudo killall -r -v apache && sudo killall -r -v mongo &",
-    "stop"      : "sudo killall -r -v node &"
+    "start"     : "node backend/index.js",
+    "stop"      : "sudo killall -r -v node"
   },
   "private": true,
   "devDependencies": {
