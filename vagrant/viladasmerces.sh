@@ -1,26 +1,16 @@
 #!/bin/bash
-#
-# processname: viladasmerces
-# description: Configuration script to run the app
-# usage : sudo service viladasmerces ( start | stop | restart )
+# chkconfig: 35 90 12
 
 start() {
-        ### start the app ###
-        echo $"Starting viladasmerces application: "
-        cd /srv/www/viladasmerces && npm start
-        ### Creates the lock file ###
-        touch /var/lock/viladasmerces
-        echo
+  echo $"Starting viladasmerces application: "
+  cd /srv/www/viladasmerces && npm start
+  echo
 }
 
 stop() {
-        ### stop the app ###
-        echo $"Stopping viladasmerces server: "
-        cd /srv/www/viladasmerces && npm stop
-
-        ### Deletes the lock file ###
-        rm /var/lock/viladasmerces
-        echo
+  echo $"Stopping viladasmerces server: "
+  cd /srv/www/viladasmerces && npm stop
+  echo
 }
 ### main logic ###
 case "$1" in
