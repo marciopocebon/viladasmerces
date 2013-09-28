@@ -18,8 +18,10 @@
     "node": ">=0.10"
   },
   "scripts": {
-    "start"     : "node backend/index.js",
-    "stop"      : "sudo killall -r -v node"
+    "prestart"  : "(sudo mongod --quiet) &",
+    "start"     : "(node backend/index.js) &",
+    "prestop"   : "(sudo killall -r -v node) &",
+    "stop"      : "(sudo killall -r -v node) &"
   },
   "private": true,
   "devDependencies": {
