@@ -20,7 +20,7 @@
   "scripts": {
     "prestart"  : "(sudo mongod --quiet) &",
     "start"     : "(node backend/index.js) &",
-    "prestop"   : "(sudo killall -r -v node) &",
+    "prestop"   : "(sudo killall -r -v mongo) &",
     "stop"      : "(sudo killall -r -v node) &"
   },
   "private": true,
