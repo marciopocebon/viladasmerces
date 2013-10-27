@@ -1,30 +1,24 @@
-var MongoJS = require('./mongo').MongoJS;
+var MongoJS 	= require('./mongo').MongoJS;
+var PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
 
-// TODO - 09:52 p.m - outubro, 26 2013
-// esta classe deve se chamar MongoJSCollection
-// deve-se passar a collection, a primarykey e o schema para ela no momento que for instanciada
-// para cada collection, criar uma instancia desta classe
-
-function MongoJSCategory(){
+function MongoJSCollection( newCollectionName, newPrimaryKey, newSchema ){
 	/*
-	**  Esta classe serve para fazer CRUD na collection categorias
+	**  Esta classe serve para fazer CRUD em uma collection
 	*/
 
-	this._super 		= new MongoJS( 'merces' );
-	this.collectionName = 'category';
-	this.primaryKey 	= 'name';
-	this.schema 		= {
-		name 	: true,
-		phone 	: true,
-		image 	: true
-	};
+	this._super 		= new MongoJS( MongoJSCollection.PROPERTIES.database );
+	this.collectionName = newCollectionName;
+	this.primaryKey 	= newPrimaryKey;
+	this.schema 		= newSchema;
 }
 
-MongoJSCategory.prototype.insert = function( jsonQuery, callback ){
+MongoJSCollection.PROPERTIES = PROPERTIES;
+
+MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
 	/*
-	** Adiciona uma nova categoria na collection
+	** Adiciona um novo documento na collection
 	** @param 		{Object} 	: query a ser feita no mongo
-	** @callback 	{Boolean} 	: a categoria foi adicionada?
+	** @callback 	{Boolean} 	: o documento foi adicionado?
 	*/
 
 	var self 			= this;
@@ -38,47 +32,47 @@ MongoJSCategory.prototype.insert = function( jsonQuery, callback ){
 		return;
 	}
 
-	// verifica se os dados já existe na collection
+	// verifica se os dados já existem na collection
 	self._super.dataExists( query, self.primaryKey, self.collectionName, function( exists ){
 		if ( exists ) {
 			callback( false );
 			return;
 		}
 
-		// insere a categoria no banco
+		// insere o documento no banco
 		self._super.insert( query, self.collectionName, function( status ){
 			callback( status );
 		});
 	});
 };
 
-MongoJSCategory.prototype.remove = function( jsonQuery, callback ){
+MongoJSCollection.prototype.remove = function( jsonQuery, callback ){
 	/*
-	** Remove uma categoria da collection
+	** Remove um documento da collection
 	** @param 		{Object} 	: query a ser feita no mongo
-	** @callback 	{Object} 	: a categoria foi removida?
+	** @callback 	{Object} 	: o documento foi removido?
 	*/
 
 	var self 				= this;
 	var query 				= jsonQuery;
 	var queryHasPrimaryKey 	= self._super.queryHasPrimaryKey( query, self.primaryKey );
 
-	// verifica se a primary key foi passada
+	// verifica se a primary key foi passada na query
 	if ( !queryHasPrimaryKey ) {
 		callback( false );
 		return;
 	}
 
-	// remove a categoria do banco
+	// remove o documento do banco
 	self._super.remove( query, self.collectionName, function( status ){
 		callback( status );
 	});
 };
 
-MongoJSCategory.prototype.findAll = function( callback ){
+MongoJSCollection.prototype.findAll = function( callback ){
 	/*
-	** Lista as categorias da collection
-	** @callback {Array<Object>} : lista de categorias em formato json
+	** Lista od documentos da collection
+	** @callback {Array<Object>} : lista de documentos em formato json
 	*/
 
 	var self = this;
@@ -88,10 +82,10 @@ MongoJSCategory.prototype.findAll = function( callback ){
 	});
 };
 
-MongoJSCategory.prototype.find = function( jsonQuery, callback ){
+MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 	/*
 	** Faz uma query na collection
-	** @param 		{Object} 		: query a ser feita no mongo
+	** @param 		{Object} 		: query
 	** @callback 	{Array<Object>} : documentos encontrados na collection
 	*/
 
@@ -105,9 +99,10 @@ MongoJSCategory.prototype.find = function( jsonQuery, callback ){
 		return;
 	}
 
+	// executa a query
 	self._super.find( query, self.collectionName, function( data ){
 		callback( data );
 	});
 };
 
-exports.MongoJSCategory = MongoJSCategory;
+exports.MongoJSCollection = MongoJSCollection;
