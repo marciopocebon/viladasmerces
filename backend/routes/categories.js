@@ -1,6 +1,11 @@
-var MongoJSCategory = require('../libs/mongo-categories').MongoJSCategory;
-var categories 		= new MongoJSCategory();
-var url 			= require('url');
+var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
+var PROPERTIES 			= {
+	collection 	: MongoJSCollection.PROPERTIES.collections.category.name,
+	schema 		: MongoJSCollection.PROPERTIES.collections.category.schema,
+	primaryKey 	: MongoJSCollection.PROPERTIES.collections.category.primaryKey
+};
+var categories 			= new MongoJSCollection( PROPERTIES.collection, PROPERTIES.schema, PROPERTIES.primaryKey );
+var url 				= require('url');
 
 exports.find = function( req, res ){
 	/*
