@@ -1,4 +1,4 @@
-var MongoJSCategory = require('../libs/src/mongo-categories').MongoJSCategory;
+var MongoJSCategory = require('../libs/mongo-categories').MongoJSCategory;
 var categories 		= new MongoJSCategory();
 var url 			= require('url');
 

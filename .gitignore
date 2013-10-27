@@ -3,3 +3,4 @@
 *npm-debug.log
 css/
 .vagrant*
+data/db/*

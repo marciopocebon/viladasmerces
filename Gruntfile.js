@@ -42,7 +42,7 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-shell');
 
-	grunt.registerTask( 'dev',	 	['shell:startServer'] );
+	grunt.registerTask( 'dev', ['shell:startServer'] );
 	//grunt.registerTask( 'backend', 	['concat:backend', 'uglify:backend'] );
 	//grunt.registerTask( 'frontend', ['concat:frontend', 'uglify:frontend'] );
 };

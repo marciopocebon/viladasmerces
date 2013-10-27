@@ -1,4 +1,4 @@
-var MongoJS = require('../libs/src/mongo').MongoJS;
+var MongoJS = require('../libs/mongo').MongoJS;
 
 exports.index = function(req,res){
 	var a 			= new MongoJS( 'merces' );

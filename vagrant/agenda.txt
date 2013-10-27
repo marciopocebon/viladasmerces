@@ -1,0 +1,22 @@
+Softwares free
+- xplit
+
+Websites already use youtube api
+- http://www.soundslice.com/
+
+Analytics
+- https://www.nextbigsound.com/
+
+
+
+http://www.tastemade.com/
+http://zefr.com/
+
+NEMSIM
+
+
+
+=====================
+
+
+https://developers.google.com/youtube/js_api_reference
