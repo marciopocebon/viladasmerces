@@ -1,0 +1,2 @@
+ProxyPass /rest http://localhost:8080
+ProxyPassReverse /rest http://localhost:8080
