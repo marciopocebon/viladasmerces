@@ -1,4 +1,4 @@
-# Running the app from a virtual machine using vagrant
+# Running the app from a virtual machine
 
 ### Download the box
 $ vagrant box add viladasmerces /path/to/the/package.box
