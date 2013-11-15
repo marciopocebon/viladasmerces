@@ -1,5 +1,7 @@
 exports.start = function(){
 	
+	const PORT 		= 8080;
+
 	var express 	= require('express');
 	var app			= express();
 	var site 		= require('./site');
@@ -19,8 +21,8 @@ exports.start = function(){
 	app.get('/categories/remove', 	categories.remove);
 
 	// starta o server
-	app.listen(8080, function(){
-		console.log('server has started on port:8080');
+	app.listen(PORT, function(){
+		console.log('server has started on port:'+PORT);
 	});
 };
 

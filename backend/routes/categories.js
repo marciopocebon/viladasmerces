@@ -1,11 +1,10 @@
-var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
-var PROPERTIES 			= {
-	collection 	: MongoJSCollection.PROPERTIES.collections.category.name,
-	schema 		: MongoJSCollection.PROPERTIES.collections.category.schema,
-	primaryKey 	: MongoJSCollection.PROPERTIES.collections.category.primaryKey
-};
-var categories 			= new MongoJSCollection( PROPERTIES.collection, PROPERTIES.schema, PROPERTIES.primaryKey );
+// modules
 var url 				= require('url');
+var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
+var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
+
+// instance
+var categories 			= new MongoJSCollection( MONGO_PROPERTIES.collections.category.name, MONGO_PROPERTIES.collections.category.schema, MONGO_PROPERTIES.collections.category.primaryKey );
 
 exports.find = function( req, res ){
 	/*
@@ -13,8 +12,10 @@ exports.find = function( req, res ){
 	*/
 	var query = url.parse( req.url, true ).query;
 
-	categories.find( query, function( data ){
-		res.send( data );
+	categories.find( query, function( err, data ){
+		if (err) throw err;
+
+		res.json( data );
 	});
 };
 
@@ -22,8 +23,10 @@ exports.findAll = function( req, res ) {
 	/*
 	**  lista todas as categories
 	*/
-	categories.findAll(function( data ){
-		res.send( data );
+	categories.findAll(function( err, data ){
+		if (err) throw err;
+
+		res.json( data );
 	});
 };
 
@@ -33,22 +36,25 @@ exports.insert = function( req, res ) {
 	*/
 	var query = url.parse( req.url, true ).query;
 	
-	categories.insert(query, function( status ){
-		res.send( status );
+	categories.insert(query, function( err, status ){
+		if (err) throw err;
+
+		res.json( status );
 	});
 };
 
-// TODO - criar os metodos abaixo
 exports.remove = function( req, res ){
 	/*
 	**  remove uma categoria
 	*/
 	var query = url.parse( req.url, true ).query;
 
-	categories.remove( query, function( status ){
-		res.send( status );
+	categories.remove( query, function( err, status ){
+		if (err) throw err;
+
+		res.json( status );
 	});
 };
 
-// TODO
+// TODO - criar os metodos abaixo
 exports.update = function(){};

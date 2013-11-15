@@ -1,3 +1,6 @@
+// references
+// http://mongodb.github.io/node-mongodb-native/markdown-docs/insert.html
+
 var mongodb         = require('mongodb');
 var MongoClient     = mongodb.MongoClient;
 var Server          = mongodb.Server;
@@ -22,16 +25,11 @@ MongoJS.prototype._open = function( callback ){
     var self = this;
     
     self.mongoClient.open( function( err, mongoClient ){
-        if ( err ) {
-            console.log( err );
-            self._close();
-            callback( false );
-            return;
-        }
+        if (err) throw err;
 
         self.db = self.mongoClient.db( self.dbName );
         console.log('database on');
-        callback( true );
+        callback();
     });
 };
 
@@ -62,24 +60,14 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
 
     self._open( function(){
         self.db.collection( collectionName, function( err, collection ){
-            if ( err ) {
-                console.log( err );
-                self._close();
-                callback( false );
-                return;
-            }
+            if (err) throw err;
 
-            collection.save( query, {safe : true}, function( err, data ){
-                if (err) {
-                    console.log( err );
-                    self._close();
-                    callback( false );
-                    return;
-                }
+            collection.insert( query, {safe : true}, function( err, data ){
+                if (err) throw err;
 
                 success = Object.keys( data ).length > 0 ? true : false;
                 self._close();
-                callback( success );
+                callback( null, success );
             });
         });
     });
@@ -100,24 +88,14 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
 
     self._open( function(){
         self.db.collection( collectionName, function( err, collection ){
-            if ( err ) {
-                console.log( err );
-                self._close();
-                callback( false );
-                return;
-            }
+            if (err) throw err;
 
             collection.remove( query, true, function( err, affected_rows ){
-                if (err) {
-                    console.log( err );
-                    self._close();
-                    callback( false );
-                    return;
-                }
+                if (err) throw err;
 
                 dataRemoved = affected_rows > 0 ? true : false;
                 self._close();
-                callback( dataRemoved );
+                callback( null, dataRemoved );
             });
         });
     });
@@ -132,31 +110,15 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
 
-    self._open(function( success ){
-        if ( !success ) {
-            console.log('erro no retorno da open');
-            callback( false );
-            return;
-        }
-
+    self._open(function(){
         self.db.collection(collectionName, function( err, collection ){
-            if ( err ) {
-                console.log( err );
-                self._close();
-                callback( false );
-                return;
-            }
+            if (err) throw err;
 
             collection.find().toArray( function( err, data ) {
-                if ( err ) {
-                    console.log( err );
-                    self._close();
-                    callback( false );
-                    return;
-                }
+                if (err) throw err;
                 
                 self._close();
-                callback( data );
+                callback( null, data );
             });
         });
     });
@@ -174,43 +136,27 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     var query           = jsonQuery;
     var collectionName  = collectionName;
 
-    self._open(function( success ){
-        if ( !success ) {
-            console.log('erro no retorno da open');
-            callback( false );
-            return;
-        }
-
+    self._open(function(){
         self.db.collection(collectionName, function( err, collection ){
-            if ( err ) {
-                console.log( err );
-                self._close();
-                callback( false );
-                return;
-            }
+            if (err) throw err;
 
             collection.find( query ).toArray( function( err, data ) {
-                if ( err ) {
-                    console.log( err );
-                    self._close();
-                    callback( false );
-                    return;
-                }
+                if (err) throw err;
                 
                 self._close();
-                callback( data );
+                callback( null, data );
             });
         });
     });
 };
 
-MongoJS.prototype.dataExists = function( jsonQuery, primaryKeyCollection, collectionName, callback ){
+MongoJS.prototype.dataExists = function( jsonQuery, primaryKeyCollection, collectionName ){
     /*
     ** Verifica se um documento já existe na collection
     ** @param       {Object}    : query para consulta no mongo em formato json
     ** @param       {String}    : nome da primary key da collection
     ** @param       {String}    : nome da collection
-    ** @callback    {Boolean}   : o documento já existe?
+    ** @return    {Boolean}     : o documento existe?
     */
 
     var self                = this;
@@ -224,7 +170,7 @@ MongoJS.prototype.dataExists = function( jsonQuery, primaryKeyCollection, collec
 
     self.find(queryByPrimaryKey, collection, function( data ){
         var exists = Object.keys( data ).length > 0 ? true : false;
-        callback( exists );
+        return exists;
     });
 };
 
