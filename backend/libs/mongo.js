@@ -59,7 +59,6 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
-    var success;
 
     self._open( function( err ){
         if (err) {
@@ -96,7 +95,6 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
-    var dataRemoved;
 
     self._open( function( err ){
         if (err) {
@@ -109,14 +107,14 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
                 return callback( err, null );
             }
 
-            collection.remove( query, true, function( err, affected_rows ){
+            collection.remove( query, true, function( err, data ){
                 if (err) {
                     self._close();
                     return callback( err, null );
                 }
 
                 self._close();
-                callback( null, affected_rows );
+                callback( null, data );
             });
         });
     });

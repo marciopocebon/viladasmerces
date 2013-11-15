@@ -29,8 +29,8 @@ MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
 	if ( !isQueryValid ) return callback('query is not valid', null);
 
 	// insere o documento no banco
-	self._super.insert( query, self.collectionName, function( err, status ){
-		callback( err, status );
+	self._super.insert( query, self.collectionName, function( err, data ){
+		callback( err, data );
 	});
 };
 
@@ -41,11 +41,11 @@ MongoJSCollection.prototype.remove = function( jsonQuery, callback ){
 	** @callback 	{Object} 	: o documento foi removido?
 	*/
 
-	var self 				= this;
-	var query 				= jsonQuery;
+	var self 	= this;
+	var query 	= jsonQuery;
 
-	self._super.remove( query, self.collectionName, function( err, status ){
-		callback( err, status );
+	self._super.remove( query, self.collectionName, function( err, data ){
+		callback( err, data );
 	});
 };
 
