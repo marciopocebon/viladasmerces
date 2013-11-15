@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## installs the following packages on the system if it is not installed yet:
+## installs the following packages on the system if they are not installed yet:
 # apache2
 # mongodb
 # nodejs
