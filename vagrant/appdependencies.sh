@@ -5,6 +5,7 @@
 # mongodb
 # nodejs
 # npm
+# curl
 
 echo '# app dependencies:  '
 
@@ -51,6 +52,17 @@ else
 	echo
 	sudo apt-get update
 	sudo apt-get install npm -y
+fi
+
+# npm
+installed_status=$( dpkg -s curl | grep Status )
+if [[ $installed_status == *'install'* ]] ; then
+	echo '[curl] -> already installed'
+else
+	echo '[curl] -> installing...'
+	echo
+	sudo apt-get update
+	sudo apt-get install curl -y
 fi
 
 echo 'OK. Finished installing app dependencies!'
