@@ -1,3 +1,4 @@
+// modules
 var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
 var MongoJS 			= require('./mongo').MongoJS;
 
@@ -22,15 +23,10 @@ MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
 	var self 			= this;
 	var query 			= jsonQuery;
 	var isQueryValid 	= false;
-	var exists 			= false;
 
 	// valida a query
 	isQueryValid = self._super.isQueryValid( query, self.schema, self.primaryKey );
 	if ( !isQueryValid ) return callback('query is not valid', null);
-
-	// verifica se os dados já existem na collection
-	exists = self._super.dataExists( query, self.primaryKey, self.collectionName );
-	if ( exists ) return callback('data already exists on database', null);
 
 	// insere o documento no banco
 	self._super.insert( query, self.collectionName, function( err, status ){

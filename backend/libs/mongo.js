@@ -25,7 +25,10 @@ MongoJS.prototype._open = function( callback ){
     var self = this;
     
     self.mongoClient.open( function( err, mongoClient ){
-        if (err) throw err;
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
 
         self.db = self.mongoClient.db( self.dbName );
         console.log('database on');
@@ -58,16 +61,25 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     var query           = jsonQuery;
     var success;
 
-    self._open( function(){
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
         self.db.collection( collectionName, function( err, collection ){
-            if (err) throw err;
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
 
             collection.insert( query, {safe : true}, function( err, data ){
-                if (err) throw err;
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
 
-                success = Object.keys( data ).length > 0 ? true : false;
                 self._close();
-                callback( null, success );
+                callback( null, data );
             });
         });
     });
@@ -86,16 +98,25 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
     var query           = jsonQuery;
     var dataRemoved;
 
-    self._open( function(){
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
         self.db.collection( collectionName, function( err, collection ){
-            if (err) throw err;
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
 
             collection.remove( query, true, function( err, affected_rows ){
-                if (err) throw err;
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
 
-                dataRemoved = affected_rows > 0 ? true : false;
                 self._close();
-                callback( null, dataRemoved );
+                callback( null, affected_rows );
             });
         });
     });
@@ -110,12 +131,22 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
     var self            = this;
     var collectionName  = collectionName;
 
-    self._open(function(){
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
         self.db.collection(collectionName, function( err, collection ){
-            if (err) throw err;
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
 
             collection.find().toArray( function( err, data ) {
-                if (err) throw err;
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
                 
                 self._close();
                 callback( null, data );
@@ -136,41 +167,27 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     var query           = jsonQuery;
     var collectionName  = collectionName;
 
-    self._open(function(){
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
         self.db.collection(collectionName, function( err, collection ){
-            if (err) throw err;
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
 
             collection.find( query ).toArray( function( err, data ) {
-                if (err) throw err;
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
                 
                 self._close();
                 callback( null, data );
             });
         });
-    });
-};
-
-MongoJS.prototype.dataExists = function( jsonQuery, primaryKeyCollection, collectionName ){
-    /*
-    ** Verifica se um documento já existe na collection
-    ** @param       {Object}    : query para consulta no mongo em formato json
-    ** @param       {String}    : nome da primary key da collection
-    ** @param       {String}    : nome da collection
-    ** @return    {Boolean}     : o documento existe?
-    */
-
-    var self                = this;
-    var query               = jsonQuery;
-    var primaryKey          = primaryKeyCollection;
-    var collection          = collectionName;
-    var queryByPrimaryKey   = {};
-
-    // monta a query somente com a primary key e seu valor
-    queryByPrimaryKey[ primaryKeyCollection ] = jsonQuery[ primaryKeyCollection ];
-
-    self.find(queryByPrimaryKey, collection, function( data ){
-        var exists = Object.keys( data ).length > 0 ? true : false;
-        return exists;
     });
 };
 
