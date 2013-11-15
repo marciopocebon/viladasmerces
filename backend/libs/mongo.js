@@ -196,7 +196,7 @@ MongoJS.prototype.isSchemaValid = function( jsonQuery, schemaCollection ){
     ** Verifica se as keys passadas na query fazem parte do schema da collection
     ** @param   {Object}    : query
     ** @param   {Object}    : schema
-    ** @return  {Boolean}   : a query é valida?
+    ** @return  {Boolean}   : o schema é valido?
     */
 
     var self    = this;
@@ -215,7 +215,7 @@ MongoJS.prototype.isSchemaComplete = function( jsonQuery, schemaCollection ){
     ** Verifica se a query contem a mesma quantidade de campos que o schema da collection
     ** @param {Object}      : query
     ** @param {Object}      : schema
-    ** @return {Boolean}    : a query possui todos os campos?
+    ** @return {Boolean}    : a query possui todos os campos do schema?
     */
 
     var self         = this;

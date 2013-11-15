@@ -43,12 +43,7 @@ MongoJSCollection.prototype.remove = function( jsonQuery, callback ){
 
 	var self 				= this;
 	var query 				= jsonQuery;
-	var queryHasPrimaryKey 	= self._super.queryHasPrimaryKey( query, self.primaryKey );
 
-	// verifica se a primary key foi passada na query
-	if ( !queryHasPrimaryKey ) return callback('primary_key is missing', null);
-
-	// remove o documento do banco
 	self._super.remove( query, self.collectionName, function( err, status ){
 		callback( err, status );
 	});
@@ -76,12 +71,7 @@ MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 
 	var self 				= this;
 	var query 				= jsonQuery;
-	var isSchemaValid 		= self._super.isSchemaValid( query, self.schema );
 
-	// valida o schema antes de executar a query
-	if ( !isSchemaValid ) return callback('schema is invalid', null);
-
-	// executa a query
 	self._super.find( query, self.collectionName, function( err, data ){
 		callback( err, data );
 	});
