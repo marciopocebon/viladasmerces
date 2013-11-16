@@ -50,7 +50,7 @@ exports.remove = function( req, res ){
 	**  remove uma categoria
 	*/
 
-	var query = url.parse( req.url, true ).query;
+	var query = { name : req.params.name };
 	
 	categories.remove( query, function( err, data ){
 		if (err) res.json(err);
