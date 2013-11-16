@@ -4,9 +4,20 @@ var MONGO_PROPERTIES = {
 		categories : {
 			name 	: 'categories',
 			schema : {
-				name 	: true,
-				phone 	: true,
-				image 	: true
+				name 		: true,
+				description : true
+			},
+			primaryKey 	: 'name'
+		},
+		places : {
+			name 	: 'places',
+			schema : {
+				name 			: true,
+				address 		: true,
+				province 		: true,
+				phone_number 	: true,
+				image 			: true,
+				category 		: true
 			},
 			primaryKey 	: 'name'
 		}
