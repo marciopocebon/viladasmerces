@@ -155,7 +155,7 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
 
 MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     /*
-    ** Faz uma consulta genérica na collection
+    ** Faz uma consulta genérica na collection e retorna multiplos documentos
     ** @param {Object}   : parametros no modelo {key:value}
     ** @param {String}   : nome da collection 
     ** @callback {Array} : lista registros encontrados
@@ -191,10 +191,10 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
 
 MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
     /*
-    ** Faz uma consulta genérica na collection
+    ** Faz uma consulta genérica na collection e retorna somente 1 documento
     ** @param {Object}   : parametros no modelo {key:value}
     ** @param {String}   : nome da collection 
-    ** @callback {Array} : lista registros encontrados
+    ** @callback {Array} : lregistro encontrado
     */
 
     var self            = this;

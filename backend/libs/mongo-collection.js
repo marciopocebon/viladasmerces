@@ -65,7 +65,7 @@ MongoJSCollection.prototype.findAll = function( callback ){
 
 MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 	/*
-	** Faz uma query na collection
+	** Procura por documentos na collection
 	** @param 		{Object} 		: query
 	** @callback 	{Array<Object>} : documentos encontrados na collection
 	*/
@@ -80,9 +80,9 @@ MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 
 MongoJSCollection.prototype.findOne = function( jsonQuery, callback ){
 	/*
-	** Faz uma query na collection
+	** Procura por um determinado documento na collection
 	** @param 		{Object} 		: query
-	** @callback 	{Array<Object>} : documentos encontrados na collection
+	** @callback 	{Array<Object>} : documento encontrado na collection
 	*/
 
 	var self 				= this;

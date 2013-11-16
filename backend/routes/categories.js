@@ -35,8 +35,8 @@ exports.insert = function( req, res ) {
 	/*
 	**  cadastra uma nova categoria
 	*/
-
-	var query = url.parse( req.url, true ).query;
+	
+	var query = req.body;
 	
 	categories.insert(query, function( err, data ){
 		if (err) res.json(err);

@@ -13,10 +13,14 @@ exports.start = function(){
 	app.get('/', site.index);
 
 	// categories
-	// TODO
-	// trocar rotas para REST ( PUT, DELETE, PUSH, etc )
-	app.get('/categories', 			categories.findAll);
-	app.get('/categories/:name', 	categories.findOne);
+	app.get( 	'/categories', 			categories.findAll);
+	app.get( 	'/categories/:name', 	categories.findOne);
+	app.post( 	'/categories', 			categories.insert);
+	// 
+	// 
+	// app.delete( 	'/categories/:name', 	categories.remove);
+	// app.push( 	'/categories/:name', 	categories.findAndModify);
+	// app.push( 	'/categories', 			categories.update);
 
 	// starta o server
 	app.listen(PORT, function(){
