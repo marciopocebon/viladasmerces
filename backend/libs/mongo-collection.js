@@ -1,6 +1,7 @@
 // modules
 var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
 var MongoJS 			= require('./mongo').MongoJS;
+var MongoJSValidator	= require('./mongo-validator').MongoJSValidator;
 
 function MongoJSCollection( newCollectionName, newSchema, newPrimaryKey ){
 	/*
@@ -25,7 +26,7 @@ MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
 	var isQueryValid 	= false;
 
 	// valida a query
-	isQueryValid = self._super.isQueryValid( query, self.schema, self.primaryKey );
+	isQueryValid = MongoJSValidator.isQueryValid( query, self.schema, self.primaryKey );
 	if ( !isQueryValid ) return callback('query is not valid', null);
 
 	// insere o documento no banco
