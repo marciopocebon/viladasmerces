@@ -13,13 +13,16 @@ exports.start = function(){
 	app.get('/', site.index);
 
 	// categories
+	// gets all items
 	app.get( 	'/categories', 			categories.findAll);
+	// creates an item
 	app.post( 	'/categories', 			categories.insert);
+	// gets specified item
 	app.get( 	'/categories/:name', 	categories.findOne);
+	// deletes an item
 	app.delete( '/categories/:name', 	categories.remove);
-	
-	// app.push( 	'/categories/:name', 	categories.findAndModify);
-	// app.push( 	'/categories', 			categories.update);
+	// updates an item
+	app.put( 	'/categories/:name', 	categories.findAndModify);
 
 	// starta o server
 	app.listen(PORT, function(){

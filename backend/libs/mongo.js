@@ -51,9 +51,9 @@ MongoJS.prototype._close = function(){
 MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     /*
     ** Salva um novo item na collection
-    ** @param {Object}      : query
-    ** @param {String}      : nome da collection
-    ** @callback {Boolean}  : os dados foram inseridos na collection?
+    ** @param {Object}  : query
+    ** @param {String}  : nome da collection
+    ** @callback {int}  : os dados foram inseridos na collection?
     */
 
     var self            = this;
@@ -87,9 +87,9 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
 MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
     /*
     ** Deleta um documento da collection
-    ** @param {Object}      : query
-    ** @param {String}      : nome da collection
-    ** @callback {Function} : o documento foi deletado?
+    ** @param {Object} : query
+    ** @param {String} : nome da collection
+    ** @callback {int} : o documento foi deletado?
     */
 
     var self            = this;
@@ -123,8 +123,8 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
 MongoJS.prototype.findAll = function( collectionName, callback ){
     /*
     ** Retorna todos registros encontrados na collection
-    ** @param {String}      : nome da collection
-    ** @callback {Array}    : lista de registros
+    ** @param {String}          : nome da collection
+    ** @callback {Array<Json>}  : lista de registros
     */
     var self            = this;
     var collectionName  = collectionName;
@@ -158,7 +158,7 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     ** Faz uma consulta genérica na collection e retorna multiplos documentos
     ** @param {Object}   : parametros no modelo {key:value}
     ** @param {String}   : nome da collection 
-    ** @callback {Array} : lista registros encontrados
+    ** @callback {Array<Json>} : lista registros encontrados
     */
 
     var self            = this;
@@ -194,7 +194,7 @@ MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
     ** Faz uma consulta genérica na collection e retorna somente 1 documento
     ** @param {Object}   : parametros no modelo {key:value}
     ** @param {String}   : nome da collection 
-    ** @callback {Array} : lregistro encontrado
+    ** @callback {Json} : registro encontrado
     */
 
     var self            = this;
@@ -213,6 +213,45 @@ MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
             }
 
             collection.findOne( query, function( err, data ) {
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
+                
+                self._close();
+                callback( null, data );
+            });
+        });
+    });
+};
+
+MongoJS.prototype.findAndModify = function( jsonQuery, jsonOperator, collectionName, callback ){
+    /*
+    ** Faz uma consulta na collection, encontra, atualiza e retorna o documento
+    ** @param {Object}   : parametros no modelo {key:value}
+    ** @param {String}   : nome da collection 
+    ** @callback {Json} : registro modificado
+    */
+
+    var self            = this;
+    var collectionName  = collectionName;
+    var query           = jsonQuery;
+    var operator        = jsonOperator;
+    var sort            = [];
+    var options         = { 'new' : true };
+
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
+        self.db.collection(collectionName, function( err, collection ){
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
+
+            collection.findAndModify( query, sort, operator, options, function( err, data ) {
                 if (err) {
                     self._close();
                     return callback( err, null );

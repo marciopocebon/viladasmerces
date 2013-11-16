@@ -4,7 +4,7 @@ var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
 var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
 
 // instance
-var categories 			= new MongoJSCollection( MONGO_PROPERTIES.collections.categories.name, MONGO_PROPERTIES.collections.categories.schema, MONGO_PROPERTIES.collections.categories.primaryKey );
+var categories = new MongoJSCollection( MONGO_PROPERTIES.collections.categories.name, MONGO_PROPERTIES.collections.categories.schema, MONGO_PROPERTIES.collections.categories.primaryKey );
 
 exports.findOne = function( req, res ){
 	/*
@@ -59,5 +59,17 @@ exports.remove = function( req, res ){
 	});
 };
 
-// TODO - criar os metodos abaixo
-exports.update = function(){};
+exports.findAndModify = function( req, res ){
+	/*
+	**  atualiza uma categoria
+	*/
+
+	var query 		= { name : req.params.name };
+	var updateData 	= req.body;
+	
+	categories.findAndModify( query, updateData, function( err, data ){
+		if (err) res.json(err);
+
+		res.json( data );
+	});	
+};

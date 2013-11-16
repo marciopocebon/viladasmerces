@@ -93,4 +93,20 @@ MongoJSCollection.prototype.findOne = function( jsonQuery, callback ){
 	});
 };
 
+MongoJSCollection.prototype.findAndModify = function( jsonQuery, jsonUpdateData, callback ){
+	/*
+	** Atualiza dados de um documento na collection
+	** @param 		{Object} 		: query
+	** @callback 	{Array<Object>} : documento modificado
+	*/
+
+	var self 		= this;
+	var query 		= jsonQuery;
+    var operator 	= { '$set' : jsonUpdateData };
+
+	self._super.findAndModify( query, operator, self.collectionName, function( err, data ){
+		callback( err, data );
+	});
+};
+
 exports.MongoJSCollection = MongoJSCollection;
