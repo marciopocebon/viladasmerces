@@ -78,4 +78,19 @@ MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 	});
 };
 
+MongoJSCollection.prototype.findOne = function( jsonQuery, callback ){
+	/*
+	** Faz uma query na collection
+	** @param 		{Object} 		: query
+	** @callback 	{Array<Object>} : documentos encontrados na collection
+	*/
+
+	var self 				= this;
+	var query 				= jsonQuery;
+
+	self._super.findOne( query, self.collectionName, function( err, data ){
+		callback( err, data );
+	});
+};
+
 exports.MongoJSCollection = MongoJSCollection;

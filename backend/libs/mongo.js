@@ -189,4 +189,40 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     });
 };
 
+MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
+    /*
+    ** Faz uma consulta genérica na collection
+    ** @param {Object}   : parametros no modelo {key:value}
+    ** @param {String}   : nome da collection 
+    ** @callback {Array} : lista registros encontrados
+    */
+
+    var self            = this;
+    var query           = jsonQuery;
+    var collectionName  = collectionName;
+
+    self._open( function( err ){
+        if (err) {
+            self._close();
+            return callback( err, null );
+        }
+        self.db.collection(collectionName, function( err, collection ){
+            if (err) {
+                self._close();
+                return callback( err, null );
+            }
+
+            collection.findOne( query, function( err, data ) {
+                if (err) {
+                    self._close();
+                    return callback( err, null );
+                }
+                
+                self._close();
+                callback( null, data );
+            });
+        });
+    });
+};
+
 exports.MongoJS  = MongoJS;

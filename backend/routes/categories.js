@@ -6,14 +6,14 @@ var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
 // instance
 var categories 			= new MongoJSCollection( MONGO_PROPERTIES.collections.categories.name, MONGO_PROPERTIES.collections.categories.schema, MONGO_PROPERTIES.collections.categories.primaryKey );
 
-exports.find = function( req, res ){
+exports.findOne = function( req, res ){
 	/*
 	** lista uma determinada categoria
 	*/
 
-	var query = url.parse( req.url, true ).query;
+	var query = { name : req.params.name };
 
-	categories.find( query, function( err, data ){
+	categories.findOne( query, function( err, data ){
 		if (err) res.json(err);
 
 		res.json( data );
