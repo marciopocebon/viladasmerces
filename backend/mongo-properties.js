@@ -5,7 +5,7 @@ var MONGO_PROPERTIES = {
 			name 	: 'categories',
 			schema : {
 				name 		: true,
-				description : true
+				url 		: true
 			},
 			primaryKey 	: 'name'
 		},
@@ -13,6 +13,7 @@ var MONGO_PROPERTIES = {
 			name 	: 'places',
 			schema : {
 				name 			: true,
+				url 			: true,
 				address 		: true,
 				province 		: true,
 				phone_number 	: true,
@@ -20,6 +21,10 @@ var MONGO_PROPERTIES = {
 				category 		: true
 			},
 			primaryKey 	: 'name'
+		},
+		users : {
+			username 	: true,
+			email 		: true
 		}
 	}
 };

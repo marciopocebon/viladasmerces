@@ -5,39 +5,26 @@ exports.start = function(){
 	var express 	= require('express');
 	var app			= express();
 	var root 		= require('./root');
-	var categories 	= require('./categories');
-	var places 		= require('./places');
+	var crud 		= require('./crud');
 
 	app.use(express.bodyParser());
 
 	// root
-	app.get('/', root.index);
+	// app.get('/', root.index);
 
-	// categories
-	// gets all items
-	app.get( 	'/categories', 			categories.findAll);
+	// CRUD routes
+	// retrieves all items
+	app.get( 	'/:collection',			crud.findAll);
 	// creates an item
-	app.post( 	'/categories', 			categories.insert);
-	// gets specified item
-	app.get( 	'/categories/:name', 	categories.findOne);
+	app.post( 	'/:collection', 		crud.insert);
+	// retrieves specified item
+	app.get( 	'/:collection/:name', 	crud.findOne);
 	// deletes an item
-	app.delete( '/categories/:name', 	categories.remove);
+	app.delete( '/:collection/:name', 	crud.remove);
 	// updates an item
-	app.put( 	'/categories/:name', 	categories.findAndModify);
+	app.put( 	'/:collection/:name', 	crud.findAndModify);
 
-	// places
-	// gets all items
-	app.get( 	'/places', 			places.findAll);
-	// creates an item
-	app.post( 	'/places', 			places.insert);
-	// gets specified item
-	app.get( 	'/places/:name', 	places.findOne);
-	// deletes an item
-	app.delete( '/places/:name', 	places.remove);
-	// updates an item
-	app.put( 	'/places/:name', 	places.findAndModify);
-
-	// starta o server
+	// starts the server
 	app.listen(PORT, function(){
 		console.log('server has started on port:'+PORT);
 	});
