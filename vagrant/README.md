@@ -1,21 +1,35 @@
-# Running the app from a virtual machine
+# Rodando a aplicação de uma máquina virtual através do vagrant
 
-### Download the box
+### Download
 ``
-$ vagrant box add viladasmerces /path/to/the/package.box
+$ vagrant box add viladasmerces http://www.marioluan.com.br/viladasmerces.box
 ``
 
-### Go to repository's vagrant directory
+### Acesse o diretório do vagrant
 ``
 $ cd viladasmerces/vagrant/
 ``
 
-### Edit vagrantfile and set up the synced folder
+### Configure as propriedades do Vagrantfile
 
-### Start the VM
+### Suba a VM
 ``
 $ vagrant up
 ``
 
-### Verify if the VM is running
-Go to http://192.168.33.10/rest/ and check for the welcome message: 'opa'
+### Acesse a máquina via ssh
+``
+$ vagrant ssh
+``
+
+### Vá até o diretório backend, onde se encontra a 'shared_folder' do repositório
+``
+$ cd caminho/para/repo/viladasmerces/backend/
+``
+### Suba o servidor
+``
+$ node index.js
+``
+
+Se tudo correr bem, o app já estará escurando conexões em:
+http://app.viladasmerces/rest/:collection
