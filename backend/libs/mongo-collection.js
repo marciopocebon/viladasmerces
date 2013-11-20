@@ -1,26 +1,27 @@
-// modules
 var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
 var MongoJS 			= require('./mongo').MongoJS;
 var MongoJSValidator	= require('./mongo-validator').MongoJSValidator;
 
+/**
+ * @class [responsavel por fazer CRUD]
+ * @param {String} newCollectionName [nome da colecao]
+ * @param {Object<json>} newSchema   [objeto json representando cada dado da collection pela chave]
+ * @param {String} newPrimaryKey     [nome da chave primaria da collection]
+ */
 function MongoJSCollection( newCollectionName, newSchema, newPrimaryKey ){
-	/*
-	**  Esta classe serve para fazer CRUD em uma collection
-	*/
-
 	this._super 		= new MongoJS( MONGO_PROPERTIES.database );
 	this.collectionName = newCollectionName;
 	this.schema 		= newSchema;
 	this.primaryKey 	= newPrimaryKey;
 }
 
+/**
+ * Cadastra documentos
+ * @param  {Object<json>}   jsonQuery [dados do documento]
+ * @param  {Function} callback  [erro ou documento]
+ * @return {void}
+ */
 MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
-	/*
-	** Adiciona um novo documento na collection
-	** @param 		{Object} 	: query a ser feita no mongo
-	** @callback 	{Boolean} 	: o documento foi adicionado?
-	*/
-
 	var self 			= this;
 	var query 			= jsonQuery;
 	var isQueryValid 	= false;
@@ -35,13 +36,13 @@ MongoJSCollection.prototype.insert = function( jsonQuery, callback ){
 	});
 };
 
+/**
+ * Remove documentos
+ * @param  {Object<json>}   jsonQuery [parametros da consulta]
+ * @param  {Function} callback  [erro ou quantidade de documentos removidos]
+ * @return {void}
+ */
 MongoJSCollection.prototype.remove = function( jsonQuery, callback ){
-	/*
-	** Remove um documento da collection
-	** @param 		{Object} 	: query a ser feita no mongo
-	** @callback 	{Object} 	: o documento foi removido?
-	*/
-
 	var self 	= this;
 	var query 	= jsonQuery;
 
@@ -50,12 +51,12 @@ MongoJSCollection.prototype.remove = function( jsonQuery, callback ){
 	});
 };
 
+/**
+ * Retorna todos os documentos de uma collection
+ * @param  {Function} callback [erro ou documentos]
+ * @return {void}
+ */
 MongoJSCollection.prototype.findAll = function( callback ){
-	/*
-	** Lista os documentos da collection
-	** @callback {Array<Object>} : lista de documentos em formato json
-	*/
-
 	var self = this;
 
 	self._super.findAll( self.collectionName, function( err, data ){
@@ -63,13 +64,13 @@ MongoJSCollection.prototype.findAll = function( callback ){
 	});
 };
 
+/**
+ * Faz uma consulta generica na collection
+ * @param  {Object<json>}   jsonQuery [parametros da consulta]
+ * @param  {Function} callback  [erro ou documentos encontrados]
+ * @return {void}	
+ */
 MongoJSCollection.prototype.find = function( jsonQuery, callback ){
-	/*
-	** Procura por documentos na collection
-	** @param 		{Object} 		: query
-	** @callback 	{Array<Object>} : documentos encontrados na collection
-	*/
-
 	var self 				= this;
 	var query 				= jsonQuery;
 
@@ -78,13 +79,13 @@ MongoJSCollection.prototype.find = function( jsonQuery, callback ){
 	});
 };
 
+/**
+ * Procura e retorna um documento
+ * @param  {Object<json>}   jsonQuery [parametros da consulta]
+ * @param  {Function} callback  [erro ou documento]
+ * @return {void}
+ */
 MongoJSCollection.prototype.findOne = function( jsonQuery, callback ){
-	/*
-	** Procura por um determinado documento na collection
-	** @param 		{Object} 		: query
-	** @callback 	{Array<Object>} : documento encontrado na collection
-	*/
-
 	var self 				= this;
 	var query 				= jsonQuery;
 
@@ -93,6 +94,13 @@ MongoJSCollection.prototype.findOne = function( jsonQuery, callback ){
 	});
 };
 
+/**
+ * Atualiza dados de um documento
+ * @param  {Object<json>}   jsonQuery      [parametros da consulta]
+ * @param  {Object<json>}   jsonUpdateData [novos dados do documento]
+ * @param  {Function} callback       [erro ou documento]
+ * @return {void}
+ */
 MongoJSCollection.prototype.findAndModify = function( jsonQuery, jsonUpdateData, callback ){
 	/*
 	** Atualiza dados de um documento na collection

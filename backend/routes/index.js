@@ -1,30 +1,29 @@
 exports.start = function(){
-	
-	const PORT 		= 8080;
-
 	var express 	= require('express');
 	var app			= express();
 	var root 		= require('./root');
 	var crud 		= require('./crud');
+	const PORT 		= 8080;
 
+	// necessario parsear o body para acessar seus dados
 	app.use(express.bodyParser());
 
 	// root
 	// app.get('/', root.index);
 
-	// CRUD routes
-	// retrieves all items
-	app.get( 	'/:collection',			crud.findAll);
-	// creates an item
-	app.post( 	'/:collection', 		crud.insert);
-	// retrieves specified item
-	app.get( 	'/:collection/:name', 	crud.findOne);
-	// deletes an item
-	app.delete( '/:collection/:name', 	crud.remove);
-	// updates an item
-	app.put( 	'/:collection/:name', 	crud.findAndModify);
+	// rotas de CRUD
+	// retorna todos items cadastrados
+	app.get('/:collection', crud.findAll);
+	// cria um novo item
+	app.post('/:collection', crud.insert);
+	// retorna um unico item
+	app.get( '/:collection/:name', crud.findOne);
+	// deleta um item
+	app.delete('/:collection/:name', crud.remove);
+	// atualiza um item
+	app.put( '/:collection/:name', crud.findAndModify);
 
-	// starts the server
+	// inicia o servidor
 	app.listen(PORT, function(){
 		console.log('server has started on port:'+PORT);
 	});

@@ -1,3 +1,6 @@
+/**
+ * @object [responsavel por disponibilizar metodos para validar queries de operacoes CRUD]
+ */
 function MongoJSValidator(){}
 
 MongoJSValidator.isSchemaValid = function( jsonQuery, schemaCollection ){

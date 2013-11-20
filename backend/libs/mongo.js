@@ -1,30 +1,26 @@
-// references
-// http://mongodb.github.io/node-mongodb-native/markdown-docs/insert.html
-
 var mongodb         = require('mongodb');
 var MongoClient     = mongodb.MongoClient;
 var Server          = mongodb.Server;
 
+/**
+ * @class [responsavel por manipular conexao com banco e fazer queries em collections]
+ * @param {String} dbName [nome do banco de dados]
+ */
 function MongoJS( dbName ){
-    /*
-    ** Esta classe serve para manipular conexao com banco e fazer queries genericas em collections
-    ** @param {String} : nome do banco de dados
-    */
-    
     this.mongoClient    = new MongoClient(new Server('localhost', 27017));
     this.db             = null;
     this.dbName         = dbName;
 }
 
+/**
+ * Abre uma conexao
+ * @param  {Function} callback [erro ou objeto conexao]
+ * @return {void}
+ */
 MongoJS.prototype._open = function( callback ){
-    /*
-    ** Abre uma conexão
-    ** @callback
-    */
-
     var self = this;
     
-    self.mongoClient.open( function( err, mongoClient ){
+    self.mongoClient.open(function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -32,35 +28,34 @@ MongoJS.prototype._open = function( callback ){
 
         self.db = self.mongoClient.db( self.dbName );
         console.log('database on');
-        callback();
+        callback(null, mongoClient);
     });
 };
 
+/**
+ * Fecha uma conexao
+ * @return {void}
+ */
 MongoJS.prototype._close = function(){
-    /*
-    ** Fecha uma conexão
-    */
-
     var self = this;
 
     self.mongoClient.close();
-
     console.log('database off');
 };
 
+/**
+ * Cadastra um novo documento na collection
+ * @param  {Object<json>}   jsonQuery      [dados do documento]
+ * @param  {String}   collectionName [nome da collection]
+ * @param  {Function} callback       [erro ou documento]
+ * @return {void}
+ */
 MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
-    /*
-    ** Salva um novo item na collection
-    ** @param {Object}  : query
-    ** @param {String}  : nome da collection
-    ** @callback {int}  : os dados foram inseridos na collection?
-    */
-
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -84,19 +79,19 @@ MongoJS.prototype.insert = function( jsonQuery, collectionName, callback ){
     });
 };
 
+/**
+ * Delete documentos de uma collection
+ * @param  {Object<json>}   jsonQuery      [parametros para consulta]
+ * @param  {String}   collectionName [nome da colecao]
+ * @param  {Function} callback       [erro ou quantidade de documentos deletados]
+ * @return {void}
+ */
 MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
-    /*
-    ** Deleta um documento da collection
-    ** @param {Object} : query
-    ** @param {String} : nome da collection
-    ** @callback {int} : o documento foi deletado?
-    */
-
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -120,16 +115,17 @@ MongoJS.prototype.remove = function( jsonQuery, collectionName, callback ){
     });
 };
 
+/**
+ * Retorna todos os documentos da collection
+ * @param  {String}   collectionName [nome da colecao]
+ * @param  {Function} callback       [erro ou documentos]
+ * @return {void}
+ */
 MongoJS.prototype.findAll = function( collectionName, callback ){
-    /*
-    ** Retorna todos registros encontrados na collection
-    ** @param {String}          : nome da collection
-    ** @callback {Array<Json>}  : lista de registros
-    */
     var self            = this;
     var collectionName  = collectionName;
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -153,19 +149,19 @@ MongoJS.prototype.findAll = function( collectionName, callback ){
     });
 };
 
+/**
+ * Faz uma consulta e retorna todos os documentos encontrados
+ * @param  {Object<json>}   jsonQuery      [parametros para consulta]
+ * @param  {String}   collectionName [nome da colecao]
+ * @param  {Function} callback       [erro ou documentos]
+ * @return {void}
+ */
 MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
-    /*
-    ** Faz uma consulta genérica na collection e retorna multiplos documentos
-    ** @param {Object}   : parametros no modelo {key:value}
-    ** @param {String}   : nome da collection 
-    ** @callback {Array<Json>} : lista registros encontrados
-    */
-
     var self            = this;
     var query           = jsonQuery;
     var collectionName  = collectionName;
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -189,19 +185,19 @@ MongoJS.prototype.find = function( jsonQuery, collectionName, callback ){
     });
 };
 
+/**
+ * Faz uma busca por 1 documento
+ * @param  {Object<json>}   jsonQuery      [parametros para consulta] 
+ * @param  {String}   collectionName [nome da colecao]
+ * @param  {Function} callback       [erro ou documento]
+ * @return {void}
+ */
 MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
-    /*
-    ** Faz uma consulta genérica na collection e retorna somente 1 documento
-    ** @param {Object}   : parametros no modelo {key:value}
-    ** @param {String}   : nome da collection 
-    ** @callback {Json} : registro encontrado
-    */
-
     var self            = this;
     var query           = jsonQuery;
     var collectionName  = collectionName;
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
@@ -225,14 +221,15 @@ MongoJS.prototype.findOne = function( jsonQuery, collectionName, callback ){
     });
 };
 
+/**
+ * Atualiza dados de um documento
+ * @param  {Object<json>}   jsonQuery      [parametros para consulta]
+ * @param  {Object<json>}   jsonOperator   [operador do mongodb: $set, $unset]
+ * @param  {String}   collectionName [nome da colecao cadastrada no mongodb]
+ * @param  {Function} callback       [erro ou documento]
+ * @return {void}
+ */
 MongoJS.prototype.findAndModify = function( jsonQuery, jsonOperator, collectionName, callback ){
-    /*
-    ** Faz uma consulta na collection, encontra, atualiza e retorna o documento
-    ** @param {Object}   : parametros no modelo {key:value}
-    ** @param {String}   : nome da collection 
-    ** @callback {Json} : registro modificado
-    */
-
     var self            = this;
     var collectionName  = collectionName;
     var query           = jsonQuery;
@@ -240,7 +237,7 @@ MongoJS.prototype.findAndModify = function( jsonQuery, jsonOperator, collectionN
     var sort            = [];
     var options         = { 'new' : true };
 
-    self._open( function( err ){
+    self._open( function( err, mongoClient ){
         if (err) {
             self._close();
             return callback( err, null );
