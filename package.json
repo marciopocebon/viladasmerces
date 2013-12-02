@@ -1,6 +1,6 @@
 {
   "name": "viladasmerces",
-  "description": "business directory listing",
+  "description": "diretorio de empresas",
   "version": "0.0.1",
   "homepage": "https://github.com/marioluan/viladasmerces",
   "email": "mariosouzaluan@gmail.com",
@@ -24,7 +24,6 @@
     "grunt-contrib-uglify": "~0.2.4",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-compass": "~0.5.0",
-    "grunt-shell": "~0.3.1"
+    "grunt-contrib-compass": "~0.5.0"
   }
 }

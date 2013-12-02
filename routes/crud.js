@@ -1,6 +1,6 @@
-var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
-var MongoJSCollection 	= require('../libs/mongo-collection').MongoJSCollection;
-var MongoJSValidator 	= require('../libs/mongo-validator').MongoJSValidator;
+var MONGO_PROPERTIES 	= require('../config/mongodb/properties').MONGO_PROPERTIES;
+var MongoJSCollection 	= require('../libs/mongodb/collection').MongoJSCollection;
+var MongoJSValidator 	= require('../libs/mongodb/validator').MongoJSValidator;
 
 exports.findOne = function( req, res ){
 	/*

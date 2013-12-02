@@ -1,6 +1,6 @@
-var MONGO_PROPERTIES 	= require('../mongo-properties').MONGO_PROPERTIES;
-var MongoJS 			= require('./mongo').MongoJS;
-var MongoJSValidator	= require('./mongo-validator').MongoJSValidator;
+var MONGO_PROPERTIES 	= require('../../config/mongodb/properties').MONGO_PROPERTIES;
+var MongoJS 			= require('./database').MongoJS;
+var MongoJSValidator	= require('./validator').MongoJSValidator;
 
 /**
  * @class [responsavel por fazer CRUD]

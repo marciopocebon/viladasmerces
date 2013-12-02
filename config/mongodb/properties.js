@@ -1,4 +1,5 @@
 var MONGO_PROPERTIES = {
+	host : 'localhost',
 	database : 'merces',
 	collections : {
 		categories : {

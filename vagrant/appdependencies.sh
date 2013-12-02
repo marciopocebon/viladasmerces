@@ -54,7 +54,7 @@ else
 	sudo apt-get install npm -y
 fi
 
-# npm
+# curl
 installed_status=$( dpkg -s curl | grep Status )
 if [[ $installed_status == *'install'* ]] ; then
 	echo '[curl] -> already installed'

@@ -2,4 +2,4 @@
 viladasmerces
 =============
 
-Business directory listing from companies based in vila das merces district.
+Diretório de empersas localizadas no bairro vila das merces.

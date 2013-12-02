@@ -1,13 +1,15 @@
 var mongodb         = require('mongodb');
 var MongoClient     = mongodb.MongoClient;
 var Server          = mongodb.Server;
+const HOST          = require('../../config/mongodb/properties').MONGO_PROPERTIES.host;
+const PORT          = require('../../config/mongodb/properties').MONGO_PROPERTIES.port;
 
 /**
  * @class [responsavel por manipular conexao com banco e fazer queries em collections]
  * @param {String} dbName [nome do banco de dados]
  */
 function MongoJS( dbName ){
-    this.mongoClient    = new MongoClient(new Server('localhost', 27017));
+    this.mongoClient    = new MongoClient(new Server(HOST, PORT));
     this.db             = null;
     this.dbName         = dbName;
 }
