@@ -70,14 +70,29 @@ MongoJSValidator.isQueryValid = function( jsonQuery, schemaCollection, primaryKe
     var isSchemaValid       = false;
     var isSchemaComplete    = false;
     var queryHasPrimaryKey  = false;
+    var queryHasLength      = false;
 
     // valida a query
     isSchemaValid       = MongoJSValidator.isSchemaValid( query, schema );
     isSchemaComplete    = MongoJSValidator.isSchemaComplete( query, schema );
     queryHasPrimaryKey  = MongoJSValidator.queryHasPrimaryKey( query, primaryKey );
+    queryHasLength      = MongoJSValidator.queryHasLength( query);
 
-    if ( !isSchemaValid || !isSchemaComplete || !queryHasPrimaryKey ){
+    if ( !isSchemaValid || !isSchemaComplete || !queryHasPrimaryKey || !queryHasLength ){
         return false;
+    }
+
+    return true;
+};
+
+/**
+ * Verifica se todos os parametros da query possuem mais de 0 caracteres
+ * @param  {Object<json>} jsonQuery [query]
+ * @return {Boolean}
+ */
+MongoJSValidator.queryHasLength = function( jsonQuery ){
+    for ( var parametro in jsonQuery ) {
+        if ( parametro.length < 1 ) return false;
     }
 
     return true;
