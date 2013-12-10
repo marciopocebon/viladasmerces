@@ -3,7 +3,7 @@ exports.start = function(){
 	var app			= express();
 	var root 		= require('./root');
 	var crud 		= require('./crud');
-	const PORT 		= 8080;
+	const PORT 		= process.env.PORT || 8080;
 
 	// necessario parsear o body para acessar seus dados
 	app.use(express.bodyParser());
