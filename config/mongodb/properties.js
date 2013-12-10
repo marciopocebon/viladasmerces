@@ -1,5 +1,6 @@
 var MONGO_PROPERTIES = {
 	host : 'localhost',
+	port : 27017,
 	database : 'merces',
 	collections : {
 		categories : {
