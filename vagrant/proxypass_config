@@ -3,5 +3,5 @@ ProxyPass /rest http://localhost:8080
 ProxyPassReverse /rest http://localhost:8080
 
 # arquivos estaticos
-ProxyPass /static http://localhost/viladasmerces/satatic
-ProxyPassReverse /static http://localhost/viladasmerces/satatic
+ProxyPass /static http://localhost/viladasmerces/static
+ProxyPassReverse /static http://localhost/viladasmerces/static
