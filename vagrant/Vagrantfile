@@ -2,12 +2,13 @@
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
-
+!
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "viladasmerces"
-  config.vm.network :private_network, ip: "192.168.33.10"
-  config.vm.hostname = "app.viladasmerces"
-  config.vm.synced_folder "~/www/viladasmerces", "/var/www/viladasmerces"
-  config.vm.provision "shell" , path: "appdependencies.sh"
-  #config.vm.customize ["modifyvm", :id, "--memory", 1024]
+    config.vm.box = "viladasmerces"
+    config.vm.network :private_network, ip: "192.168.33.10"
+    config.vm.hostname = "app.viladasmerces"
+    config.vm.synced_folder "~/www/viladasmerces", "/var/www/viladasmerces"
+    config.vm.provision :puppet, :options => ["--fileserverconfig=/vagrant/fileserver.conf"]
+    # config.vm.provision "shell" , path: "appdependencies.sh"
+    #config.vm.customize ["modifyvm", :id, "--memory", 1024]
 end
