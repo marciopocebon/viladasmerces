@@ -4,19 +4,22 @@ $apt_update = "apt-get update"
 $PATH = "/usr/bin:/usr/sbin"
 
 # update packages
-exec { "apt-get update":
+exec {
+	$apt_update:
 	path => $PATH,
 	user => "root"
 }
 
 # dependencias
-package { $packages:
+package {
+	$packages:
 	ensure 	=> installed,
 	require => Exec[$apt_update]
 }
 
 # apache
-file { "/etc/apache2/httpd.conf":
+file {
+	"/etc/apache2/httpd.conf":
 	ensure => present,
 	group 	=> "root",
 	owner 	=> "root",
@@ -25,24 +28,31 @@ file { "/etc/apache2/httpd.conf":
 }
 
 # nodejs
-file { "/etc/init/viladasmerces.conf":
+file {
+	"/etc/init/viladasmerces.conf":
 	ensure 	=> present,
 	group 	=> "root",
 	owner 	=> "root",
 	mode 	=> 0775,
-	source 	=> "puppet:///files/viladasmerces.conf"
+	source 	=> "puppet:///files/viladasmerces.conf";
+
+	"/var/log/viladasmerces/":
+	ensure 	=> directory,
+	group 	=> "root",
+	owner 	=> "root",
+	mode 	=> 0755
 }
 
 # mongodb
-file { "/etc/mongodb.conf":
+file {
+	"/etc/mongodb.conf":
 	ensure 	=> present,
 	group 	=> "root",
 	owner 	=> "root",
 	mode 	=> 0644,
-	source 	=> "puppet:///files/mongodb.conf"
-}
+	source 	=> "puppet:///files/mongodb.conf";
 
-file { "/etc/init/mongodb.conf":
+	"/etc/init/mongodb.conf":
 	ensure 	=> present,
 	group 	=> "root",
 	owner 	=> "root",
@@ -51,7 +61,8 @@ file { "/etc/init/mongodb.conf":
 }
 
 # services
-service { $services:
+service {
+	$services:
 	ensure 	=> running,
 	require => Package[$packages]
 }
