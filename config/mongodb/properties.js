@@ -3,28 +3,26 @@ var MONGO_PROPERTIES = {
 	port : 27017,
 	database : 'merces',
 	collections : {
-		categories : {
-			name 	: 'categories',
+		categorias : {
+			nome : 'categorias',
 			schema : {
-				name 		: true,
+				nome 		: true,
 				url 		: true
-			},
-			primaryKey 	: 'name'
+			}
 		},
-		places : {
-			name 	: 'places',
+		locais : {
+			nome : 'locais',
 			schema : {
-				name 			: true,
+				nome 			: true,
 				url 			: true,
-				address 		: true,
-				province 		: true,
-				phone_number 	: true,
-				image 			: true,
-				category 		: true
-			},
-			primaryKey 	: 'name'
+				endereco 		: true,
+				bairro 			: true,
+				telefone 		: true,
+				imagem 			: true,
+				categoria 		: true
+			}
 		},
-		users : {
+		usuarios : {
 			username 	: true,
 			email 		: true
 		}
