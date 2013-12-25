@@ -1,5 +1,5 @@
 /**
- * @object [responsavel por disponibilizar metodos para validar queries de operacoes CRUD]
+ * @class [responsavel por disponibilizar metodos para validar queries de operacoes CRUD]
  */
 function MongoJSValidator(){}
 
