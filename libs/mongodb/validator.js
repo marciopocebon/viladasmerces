@@ -39,46 +39,26 @@ MongoJSValidator.isSchemaComplete = function( jsonQuery, schemaCollection ){
     return true;
 };
 
-MongoJSValidator.queryHasPrimaryKey = function( jsonQuery, primaryKeyCollection ){
-    /*
-    ** Verifica se a primary key consta na query
-    ** @param {Object}      : query
-    ** @param {String}      : nome da primary da collection
-    ** @return {Boolean}    : a query cotem a primary key?
-    */
-
-    var query       = jsonQuery;
-    var primaryKey  = primaryKeyCollection;
-
-    if ( typeof query[ primaryKey ] !== 'undefined' ) return true;
-
-    return false;
-};
-
-MongoJSValidator.isQueryValid = function( jsonQuery, schemaCollection, primaryKeyCollection ) {
+MongoJSValidator.isQueryValid = function( jsonQuery, schemaCollection ) {
     /*
     ** Valida uma query
     ** @param {Object} : query
     ** @param {Object} : schema da collection
-    ** @param {String} : nome da primary da collection
     ** @return {Boolean} : a query é valida?
     */
 
     var query               = jsonQuery;
     var schema              = schemaCollection;
-    var primaryKey          = primaryKeyCollection;
     var isSchemaValid       = false;
     var isSchemaComplete    = false;
-    var queryHasPrimaryKey  = false;
     var queryHasLength      = false;
 
     // valida a query
     isSchemaValid       = MongoJSValidator.isSchemaValid( query, schema );
     isSchemaComplete    = MongoJSValidator.isSchemaComplete( query, schema );
-    queryHasPrimaryKey  = MongoJSValidator.queryHasPrimaryKey( query, primaryKey );
     queryHasLength      = MongoJSValidator.queryHasLength( query);
 
-    if ( !isSchemaValid || !isSchemaComplete || !queryHasPrimaryKey || !queryHasLength ){
+    if ( !isSchemaValid || !isSchemaComplete || !queryHasLength ){
         return false;
     }
 
