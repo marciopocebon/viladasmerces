@@ -7,8 +7,8 @@ function Item( json ){
 }
 
 Item.TEMPLATE = '\
-	<tr class="item" id="categoria-{nome}">\
-		<th class="nome">{nome}</th>\
+	<tr class="item" id="{_id}">\
+		<th class="nome">{name}</th>\
 		<th class="url">{url}</th>\
 		<th class="gerenciador">\
 			<button class="btn btn-primary btn-xs editar">editar</button>\
