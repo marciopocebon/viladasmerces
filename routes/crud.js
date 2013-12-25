@@ -18,10 +18,10 @@ exports.findOne = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema, collection.primaryKey );
+	crud = new MongoJSCollection( collection.name, collection.schema );
 
 	// extrai parametros da URL
-	query = { name : req.params.name };
+	query = { _id : req.params.id };
 
 	// faz a consulta
 	crud.findOne( query, function( err, data ){
@@ -46,7 +46,7 @@ exports.findAll = function( req, res ) {
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema, collection.primaryKey );
+	crud = new MongoJSCollection( collection.name, collection.schema );
 
 	// faz a consulta
 	crud.findAll(function( err, data ){
@@ -72,7 +72,7 @@ exports.insert = function( req, res ) {
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema, collection.primaryKey );
+	crud = new MongoJSCollection( collection.name, collection.schema );
 	
 	// extrai os dados da requisicao
 	query = req.body;
@@ -101,10 +101,10 @@ exports.remove = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema, collection.primaryKey );
+	crud = new MongoJSCollection( collection.name, collection.schema );
 
 	// extrai parametros da URL
-	query = { name : req.params.name };
+	query = { _id : req.params.id };
 	
 	// faz a consulta
 	crud.remove( query, function( err, data ){
@@ -130,10 +130,10 @@ exports.findAndModify = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema, collection.primaryKey );
+	crud = new MongoJSCollection( collection.name, collection.schema );
 
 	// extrai parametros da URL
-	query 		= { name : req.params.name };
+	query = { _id : req.params.id };
 	
 	// extrai os novos dados
 	updateData 	= req.body;
