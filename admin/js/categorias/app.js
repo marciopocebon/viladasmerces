@@ -4,16 +4,51 @@ function App( config ){
 	this.formulario		= new Formulario( config.formulario );
 }
 
-App.prototype.escutarEventos = function(){
+App.prototype.recuperarCategorias = function( callback ){
+	var self = this;
+	
+	self.persistencia.recuperarItens(function( erro, dados ){
+		if ( erro ) throw Erro( 'Erro ao recuperar categorias: ' + erro );
+
+		callback( dados );
+	});
+};
+
+App.prototype.bindarRemocaoItens = function(){
+	var self = this;
+	var itens = self.tabela.itens;
+
+	for ( var i in itens ) {
+		var item = itens[i];
+		self.bindarRemocaoItem( item );
+	}
+};
+
+App.prototype.bindarRemocaoItem = function( item ){
+	var self = this;
+
+	item.escutarBtnRemover(function( itemClicado ){
+		var nome = itemClicado.$container.find('.nome').text();
+		var confirmar = confirm( 'deseja realmente remover a categoria: ' + nome);
+		if ( !confirmar ) return;
+
+		self.persistencia.removerItem( nome, function( erro, status ){
+			if ( erro ) alert('erro ao remover a categoria: ' + erro);
+			else self.tabela.rmItem( itemClicado );
+		});
+	});
+};
+
+App.prototype.escutarFormulario = function(){
 	var self = this;
 
 	self.formulario.escutarSubmit(function( erro, dados ){
-		// vira um array do banco
-		var dados = dados[0];
 		var mensagem = '';
-		
+
 		if ( !erro ) {
-			self.tabela.addItem( dados );
+			var item = new Item( dados[0] );
+			self.tabela.addItem( item );
+			self.bindarRemocaoItem( item );
 			mensagem = 'categoria adicionada com sucesso';
 		} else {
 			mensagem = erro;
@@ -26,13 +61,10 @@ App.prototype.escutarEventos = function(){
 App.prototype.init = function(){
 	var self = this;
 	
-	self.escutarEventos();
-	
-	self.persistencia.recuperarItens(function( erro, dados ){
-		if ( erro ) {
-			self.tabela.$container.append(erro);
-		} else {
-			self.tabela.addItens( dados );
-		}
+	self.escutarFormulario();
+
+	self.recuperarCategorias(function( categorias ){
+		self.tabela.addItens( categorias );
+		self.bindarRemocaoItens();
 	});
 };
