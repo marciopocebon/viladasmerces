@@ -17,11 +17,11 @@ exports.start = function(){
 	// cria um novo item
 	app.post('/:collection', crud.insert);
 	// retorna um unico item
-	app.get( '/:collection/:name', crud.findOne);
+	app.get( '/:collection/:id', crud.findOne);
 	// deleta um item
-	app.delete('/:collection/:name', crud.remove);
+	app.delete('/:collection/:id', crud.remove);
 	// atualiza um item
-	app.put( '/:collection/:name', crud.findAndModify);
+	app.put( '/:collection/:id', crud.findAndModify);
 
 	// inicia o servidor
 	app.listen(PORT, function(){
