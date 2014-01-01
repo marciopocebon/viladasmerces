@@ -9,8 +9,8 @@ function Item( json ){
 
 Item.TEMPLATE = '\
 	<tr class="item" id="{_id}">\
-		<th class="nome">{nome}</th>\
-		<th class="url">{url}</th>\
+		<th class="nome dado">{nome}</th>\
+		<th class="url dado">{url}</th>\
 		<th class="gerenciador">\
 			<button class="btn btn-primary btn-xs editar">editar</button>\
 			<button class="btn btn-success btn-xs salvar disabled">salvar</button>\
@@ -48,6 +48,30 @@ Item.prototype.isBtnDisabled = function( $el ){
 	return $el.hasClass( 'disabled' );
 };
 
+Item.prototype.disableContentEditable = function(){
+	var self = this;
+	var $dados = self.$container.find('.dado');
+	var quantidade = $dados.length;
+
+	for ( var i = 0 ; i < quantidade ; i++ ) {
+		var $dado = $($dados[i]);
+
+		$dado.attr('contenteditable', 'false');
+	}
+};
+
+Item.prototype.enableContentEditable = function(){
+	var self = this;
+	var $dados = self.$container.find('.dado');
+	var quantidade = $dados.length;
+
+	for ( var i = 0 ; i < quantidade ; i++ ) {
+		var $dado = $($dados[i]);
+
+		$dado.attr('contenteditable', 'true');
+	}
+};
+
 Item.prototype.escutarBtnEditar = function( callback ){
 	var self = this;
 	
@@ -55,9 +79,26 @@ Item.prototype.escutarBtnEditar = function( callback ){
 		var isBtnSalvarDisabled = self.isBtnDisabled( self.$btnSalvar );
 		
 		if ( isBtnSalvarDisabled ) {
+			self.enableContentEditable();
 			self.disableBtn( self.$btnEditar );
 			self.disableBtn( self.$btnRemover );
 			self.enableBtn( self.$btnSalvar );
+			callback( self );
+		}
+	});
+};
+
+Item.prototype.escutarBtnSalvar = function( callback ){
+	var self = this;
+
+	self.$btnSalvar.on('click', function(){
+		var isBtnEditarDisabled = self.isBtnDisabled( self.$btnEditar );
+
+		if ( isBtnEditarDisabled ) {
+			self.disableContentEditable();
+			self.disableBtn( self.$btnSalvar );
+			self.enableBtn( self.$btnEditar );
+			self.enableBtn( self.$btnRemover );
 			callback( self );
 		}
 	});
@@ -69,20 +110,5 @@ Item.prototype.escutarBtnRemover = function( callback ){
 	self.$btnRemover.on('click', function(){
 		var isBtnSalvarDisabled = self.isBtnDisabled( self.$btnSalvar );
 		if ( isBtnSalvarDisabled ) callback( self );
-	});
-};
-
-Item.prototype.escutarBtnSalvar = function( callback ){
-	var self = this;
-
-	self.$btnSalvar.on('click', function(){
-		var isBtnEditarDisabled = self.isBtnDisabled( self.$btnEditar );
-
-		if ( isBtnEditarDisabled ) {
-			self.disableBtn( self.$btnSalvar );
-			self.enableBtn( self.$btnEditar );
-			self.enableBtn( self.$btnRemover );
-			callback( self );
-		}
 	});
 };
