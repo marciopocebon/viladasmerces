@@ -1,20 +1,20 @@
-function App( config ){
+function GerenciadorCrud( config ){
 	this.persistencia 	= new Persistencia( config.persistencia );
 	this.tabela 		= new Tabela( config.tabela );
 	this.formulario		= new Formulario( config.formulario );
 }
 
-App.prototype.recuperarCategorias = function( callback ){
+GerenciadorCrud.prototype.recuperarCategorias = function( callback ){
 	var self = this;
 	
 	self.persistencia.recuperarItens(function( erro, dados ){
-		if ( erro ) throw Erro( 'Erro ao recuperar categorias: ' + erro );
+		if ( erro ) throw Erro( 'Erro ao recuperar dados: ' + erro );
 
 		callback( dados );
 	});
 };
 
-App.prototype.bindarEventosItens = function(){
+GerenciadorCrud.prototype.bindarEventosItens = function(){
 	var self = this;
 	var itens = self.tabela.itens;
 
@@ -24,7 +24,7 @@ App.prototype.bindarEventosItens = function(){
 	}
 };
 
-App.prototype.bindarEventosItem = function( item ){
+GerenciadorCrud.prototype.bindarEventosItem = function( item ){
 	var self = this;
 
 	self.bindarRemocaoItem( item );
@@ -32,22 +32,22 @@ App.prototype.bindarEventosItem = function( item ){
 };
 
 
-App.prototype.bindarRemocaoItem = function( item ){
+GerenciadorCrud.prototype.bindarRemocaoItem = function( item ){
 	var self = this;
 
 	item.escutarBtnRemover(function( itemClicado ){
 		var id = itemClicado.ID;
-		var confirmar = confirm( 'deseja realmente remover a categoria: ' + id);
+		var confirmar = confirm( 'deseja realmente remover o item: ' + id);
 		if ( !confirmar ) return;
 
 		self.persistencia.removerItem( id, function( erro, itemRemovido ){
-			if ( erro || itemRemovido < 1 ) alert('erro ao remover a categoria: ' + id);
+			if ( erro || itemRemovido < 1 ) alert('erro ao remover o item: ' + id);
 			else self.tabela.rmItem( itemClicado );
 		});
 	});
 };
 
-App.prototype.bindarEdicaoItem = function( item ){
+GerenciadorCrud.prototype.bindarEdicaoItem = function( item ){
 	var self = this;
 
 	item.escutarBtnEditar(function( itemClidado ){
@@ -63,17 +63,17 @@ App.prototype.bindarEdicaoItem = function( item ){
 
 };
 
-App.prototype.escutarFormulario = function(){
+GerenciadorCrud.prototype.escutarFormulario = function(){
 	var self = this;
 
 	self.formulario.escutarSubmit(function( erro, dados ){
 		var mensagem = '';
 
 		if ( !erro ) {
-			var item = new Item( dados[0] );
+			var item = new Item( dados[0], self.tabela.templateItem );
 			self.tabela.addItem( item );
 			self.bindarEventosItem( item );
-			mensagem = 'categoria adicionada com sucesso';
+			mensagem = 'item adicionado com sucesso';
 		} else {
 			mensagem = erro;
 		}
@@ -82,7 +82,7 @@ App.prototype.escutarFormulario = function(){
 	});
 };
 
-App.prototype.init = function(){
+GerenciadorCrud.prototype.init = function(){
 	var self = this;
 	
 	self.escutarFormulario();

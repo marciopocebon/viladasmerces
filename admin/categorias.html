@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
 		<div class="container">
@@ -9,8 +9,7 @@
 				<h1>categorias</h1>
 			</header>
 
-			<!-- adicionar -->
-			<form id="inserir-categoria" class="form-inline" action="http://app.viladasmerces/rest/categorias" method="POST">
+			<form class="form-inline" action="http://app.viladasmerces/rest/categorias" method="POST">
 				<div class="form-group">
 					<input type="text" name="nome" id="nome" class="form-control" placeholder="Nome" required/>
 				</div>
@@ -20,19 +19,14 @@
 				<button type="submit" class="btn btn-success submit">adicionar</button>
 			</form>
 
-			<!-- listagem -->
-			<table id="tabela-categorias" class="table table-striped table-hover">
+			<table class="table table-striped table-hover">
 				<thead>
-					<tr>
-						<th>nome</th>
-						<th>url</th>
-						<th>gerenciar</th>
-					</tr>
+					<tr></tr>
 				</thead>
 				<tbody></tbody>
 			</table>
 		</div>
 		
-		<script type="text/javascript" data-main="../js/categorias/main.js" src="../js/libs/require.js"></script>
+		<script type="text/javascript" data-main="js/categorias.js" src="js/libs/require.js"></script>
 	</body>
 </html>
