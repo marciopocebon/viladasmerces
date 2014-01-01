@@ -36,7 +36,7 @@ App.prototype.bindarRemocaoItem = function( item ){
 	var self = this;
 
 	item.escutarBtnRemover(function( itemClicado ){
-		var id = itemClicado.$container.attr('id');
+		var id = itemClicado.ID;
 		var confirmar = confirm( 'deseja realmente remover a categoria: ' + id);
 		if ( !confirmar ) return;
 
@@ -52,7 +52,7 @@ App.prototype.bindarEdicaoItem = function( item ){
 
 	item.escutarBtnEditar(function( itemClidado ){
 		item.escutarBtnSalvar(function( itemClicado ){
-			var id = itemClicado.$container.attr('id');
+			var id = itemClicado.ID;
 			var dados = itemClidado.recuperarDados();
 
 			self.persistencia.salvarItem( id, dados, function( erro, status ){
