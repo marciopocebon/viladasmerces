@@ -4,7 +4,7 @@ requirejs(deps, function(){
 	var config = {
 		tabela : '#tabela-categorias',
 		formulario : '#inserir-categoria',
-		persistencia : 'categories'
+		persistencia : 'categorias'
 	};
 
 	var app = new App( config );
