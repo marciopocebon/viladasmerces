@@ -15,10 +15,10 @@ Persistencia.prototype.recuperarItens = function( callback ){
 	Network.ajax( metodo, rota, dados, callback );
 };
 
-Persistencia.prototype.recuperarItem = function( nome, callback ){
+Persistencia.prototype.recuperarItem = function( id, callback ){
 	var self = this;
 	var metodo = 'GET';
-	var rota = self.rota+self.colecao+'/'+nome;
+	var rota = self.rota+self.colecao+'/'+id;
 	var dados = {};
 
 	Network.ajax( metodo, rota, dados, callback );
@@ -33,19 +33,19 @@ Persistencia.prototype.adicionarItem = function( dados, callback ){
 	Network.ajax( metodo, rota, dados, callback );
 };
 
-Persistencia.prototype.atualizarItem = function( nome, dados, callback ){
+Persistencia.prototype.salvarItem = function( id, dados, callback ){
 	var self = this;
 	var metodo = 'PUT';
-	var rota = self.rota+self.colecao+'/'+nome;
+	var rota = self.rota+self.colecao+'/'+id;
 	var dados = dados;
 
 	Network.ajax( metodo, rota, dados, callback );
 };
 
-Persistencia.prototype.removerItem = function( nome, callback ){
+Persistencia.prototype.removerItem = function( id, callback ){
 	var self = this;
 	var metodo = 'DELETE';
-	var rota = self.rota+self.colecao+'/'+nome;
+	var rota = self.rota+self.colecao+'/'+id;
 	var dados = {};
 
 	Network.ajax( metodo, rota, dados, callback );
