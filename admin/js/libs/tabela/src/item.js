@@ -3,15 +3,17 @@ function Item( json ){
 	this.$gerenciador 	= this.$container.find('.gerenciador');
 	this.$btnEditar		= this.$gerenciador.find('.editar');
 	this.$btnRemover	= this.$gerenciador.find('.remover');
+	this.$btnSalvar		= this.$gerenciador.find('.salvar');
 	this.ID 			= this.$container.attr('id');
 }
 
 Item.TEMPLATE = '\
 	<tr class="item" id="{_id}">\
-		<th class="nome">{name}</th>\
+		<th class="nome">{nome}</th>\
 		<th class="url">{url}</th>\
 		<th class="gerenciador">\
 			<button class="btn btn-primary btn-xs editar">editar</button>\
+			<button class="btn btn-success btn-xs salvar disabled">salvar</button>\
 			<button class="btn btn-danger btn-xs remover">remover</button>\
 		</th>\
 	</tr>';
@@ -28,11 +30,36 @@ Item.RENDERIZAR = function( json, html ){
     return html;
 };
 
+Item.prototype.recuperarDados = function(){
+	var nome = this.$container.find('.nome').text();
+	var url = this.$container.find('.url').text();
+	return { nome : nome, url : url };
+};
+
+Item.prototype.disableBtn = function( $el ){
+	$el.addClass('disabled');
+};
+
+Item.prototype.enableBtn = function( $el ){
+	$el.removeClass('disabled');
+};
+
+Item.prototype.isBtnDisabled = function( $el ){
+	return $el.hasClass( 'disabled' );
+};
+
 Item.prototype.escutarBtnEditar = function( callback ){
 	var self = this;
 	
 	self.$btnEditar.on('click', function(){
-		callback( self );
+		var isBtnSalvarDisabled = self.isBtnDisabled( self.$btnSalvar );
+		
+		if ( isBtnSalvarDisabled ) {
+			self.disableBtn( self.$btnEditar );
+			self.disableBtn( self.$btnRemover );
+			self.enableBtn( self.$btnSalvar );
+			callback( self );
+		}
 	});
 };
 
@@ -40,6 +67,22 @@ Item.prototype.escutarBtnRemover = function( callback ){
 	var self = this;
 	
 	self.$btnRemover.on('click', function(){
-		callback( self );
+		var isBtnSalvarDisabled = self.isBtnDisabled( self.$btnSalvar );
+		if ( isBtnSalvarDisabled ) callback( self );
+	});
+};
+
+Item.prototype.escutarBtnSalvar = function( callback ){
+	var self = this;
+
+	self.$btnSalvar.on('click', function(){
+		var isBtnEditarDisabled = self.isBtnDisabled( self.$btnEditar );
+
+		if ( isBtnEditarDisabled ) {
+			self.disableBtn( self.$btnSalvar );
+			self.enableBtn( self.$btnEditar );
+			self.enableBtn( self.$btnRemover );
+			callback( self );
+		}
 	});
 };
