@@ -18,7 +18,7 @@ exports.findOne = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema );
+	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
 	query = { _id : req.params.id };
@@ -46,7 +46,7 @@ exports.findAll = function( req, res ) {
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema );
+	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// faz a consulta
 	crud.findAll(function( err, data ){
@@ -72,7 +72,7 @@ exports.insert = function( req, res ) {
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema );
+	crud = new MongoJSCollection( collection.nome, collection.schema );
 	
 	// extrai os dados da requisicao
 	query = req.body;
@@ -101,7 +101,7 @@ exports.remove = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema );
+	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
 	query = { _id : req.params.id };
@@ -130,7 +130,7 @@ exports.findAndModify = function( req, res ){
 	collection = MONGO_PROPERTIES.collections[req.params.collection];
 	
 	// instancia o objeto crud
-	crud = new MongoJSCollection( collection.name, collection.schema );
+	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
 	query = { _id : req.params.id };
