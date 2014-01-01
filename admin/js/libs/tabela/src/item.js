@@ -1,22 +1,11 @@
-function Item( json ){
-	this.$container 	= $(Item.RENDERIZAR( json, Item.TEMPLATE ));
+function Item( json, template ){
+	this.$container 	= $(Item.RENDERIZAR( json, template ));
 	this.$gerenciador 	= this.$container.find('.gerenciador');
 	this.$btnEditar		= this.$gerenciador.find('.editar');
 	this.$btnRemover	= this.$gerenciador.find('.remover');
 	this.$btnSalvar		= this.$gerenciador.find('.salvar');
 	this.ID 			= this.$container.attr('id');
 }
-
-Item.TEMPLATE = '\
-	<tr class="item" id="{_id}">\
-		<th class="nome dado">{nome}</th>\
-		<th class="url dado">{url}</th>\
-		<th class="gerenciador">\
-			<button class="btn btn-primary btn-xs editar">editar</button>\
-			<button class="btn btn-success btn-xs salvar disabled">salvar</button>\
-			<button class="btn btn-danger btn-xs remover">remover</button>\
-		</th>\
-	</tr>';
 
 Item.RENDERIZAR = function( json, html ){
 
