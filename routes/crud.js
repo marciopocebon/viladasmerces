@@ -1,6 +1,7 @@
 var MONGO_PROPERTIES 	= require('../config/mongodb/properties').MONGO_PROPERTIES;
 var MongoJSCollection 	= require('../libs/mongodb/collection').MongoJSCollection;
 var MongoJSValidator 	= require('../libs/mongodb/validator').MongoJSValidator;
+var ObjectID 			= require('mongodb').ObjectID;
 
 exports.findOne = function( req, res ){
 	/*
@@ -21,7 +22,7 @@ exports.findOne = function( req, res ){
 	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
-	query = { _id : req.params.id };
+	query = { _id : new ObjectID(req.params.id) };
 
 	// faz a consulta
 	crud.findOne( query, function( err, data ){
@@ -104,7 +105,7 @@ exports.remove = function( req, res ){
 	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
-	query = { _id : req.params.id };
+	query = { _id : new ObjectID(req.params.id) };
 	
 	// faz a consulta
 	crud.remove( query, function( err, data ){
@@ -133,7 +134,7 @@ exports.findAndModify = function( req, res ){
 	crud = new MongoJSCollection( collection.nome, collection.schema );
 
 	// extrai parametros da URL
-	query = { _id : req.params.id };
+	query = { _id : new ObjectID(req.params.id) };
 	
 	// extrai os novos dados
 	updateData 	= req.body;
