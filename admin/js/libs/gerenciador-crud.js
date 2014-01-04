@@ -4,7 +4,7 @@ function GerenciadorCrud( config ){
 	this.formulario		= new Formulario( config.formulario );
 }
 
-GerenciadorCrud.prototype.recuperarCategorias = function( callback ){
+GerenciadorCrud.prototype.recuperarDados = function( callback ){
 	var self = this;
 	
 	self.persistencia.recuperarItens(function( erro, dados ){
@@ -82,13 +82,14 @@ GerenciadorCrud.prototype.escutarFormulario = function(){
 	});
 };
 
-GerenciadorCrud.prototype.init = function(){
+GerenciadorCrud.prototype.init = function( callback ){
 	var self = this;
 	
 	self.escutarFormulario();
 
-	self.recuperarCategorias(function( categorias ){
-		self.tabela.addItens( categorias );
+	self.recuperarDados(function( dados ){
+		self.tabela.addItens( dados );
 		self.bindarEventosItens();
+		if ( callback ) callback();
 	});
 };
