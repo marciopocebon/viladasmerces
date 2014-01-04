@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+		<meta charset="utf-8">
 	</head>
 	<body>
 		<div class="container">
@@ -9,29 +10,40 @@
 				<h1>locais</h1>
 			</header>
 
-			<form class="form-inline" action="http://app.viladasmerces/rest/locais" method="POST">
-				<div class="form-group">
-					<input type="text" name="nome" id="nome" class="form-control" placeholder="nome" required/>
+			<form action="http://app.viladasmerces/rest/locais" method="POST">
+				<div class="form-group col-xs-6">
+					<label for="nome">nome</label>
+					<input type="text" name="nome" id="nome" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="url" id="url" class="form-control" placeholder="url" required/>
+				<div class="form-group col-xs-6">
+					<label for="url">url</label>
+					<input type="text" name="url" id="url" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="endereco" id="endereco" class="form-control" placeholder="endereco" required/>
+				<div class="form-group col-xs-6">
+					<label for="endereco">endereço</label>
+					<input type="text" name="endereco" id="endereco" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="bairro" id="bairro" class="form-control" placeholder="bairro" required/>
+				<div class="form-group col-xs-3">
+					<label for="bairro">bairro</label>
+					<input type="text" name="bairro" id="bairro" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="telefone" id="telefone" class="form-control" placeholder="telefone" required/>
+				<div class="form-group col-xs-3">
+					<label for="telefone">telefone</label>
+					<input type="text" name="telefone" id="telefone" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="imagem" id="imagem" class="form-control" placeholder="imagem" required/>
+				<div class="form-group col-xs-3">
+					<label for="imagem">imagem</label>
+					<input type="file" name="imagem" id="imagem" class="form-control" required/>
 				</div>
-				<div class="form-group">
-					<input type="text" name="categoria" id="categoria" class="form-control" placeholder="categoria" required/>
+				<div class="form-group col-xs-9">
+					<label for="categoria">categoria</label>
+					<select class="form-control" name="categoria" id="categoria" required>
+						<option value="0">--</option>
+					</select>
 				</div>
-				<button type="submit" class="btn btn-success submit">adicionar</button>
+				<div class="form-group col-xs-3">
+					<button type="submit" class="btn btn-success submit">adicionar</button>
+				</div>
 			</form>
 
 			<table class="table table-striped table-hover">
