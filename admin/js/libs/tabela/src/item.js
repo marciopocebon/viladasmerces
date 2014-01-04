@@ -1,5 +1,5 @@
 function Item( json, template ){
-	this.$container 	= $(Item.RENDERIZAR( json, template ));
+	this.$container 	= $(Helper.renderizar( json, template ));
 	this.$gerenciador 	= this.$container.find('.gerenciador');
 	this.$btnEditar		= this.$gerenciador.find('.editar');
 	this.$btnRemover	= this.$gerenciador.find('.remover');
@@ -7,18 +7,10 @@ function Item( json, template ){
 	this.ID 			= this.$container.attr('id');
 }
 
-Item.RENDERIZAR = function( json, html ){
-
-    for (var key in json) {
-        var regularExpression = new RegExp('\{'+key+'\}', 'ig');
-        var content = json[key];
-
-        html = html.replace(regularExpression, content);
-    }
-
-    return html;
-};
-
+// TODO
+// recuperar dados de forma dinamica
+// como nao sabemos quantos campos existirao
+// devera recuperar dados de todos os campos existentes e retornar um json
 Item.prototype.recuperarDados = function(){
 	var nome = this.$container.find('.nome').text();
 	var url = this.$container.find('.url').text();
