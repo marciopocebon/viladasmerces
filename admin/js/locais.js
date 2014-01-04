@@ -1,15 +1,27 @@
-var deps = ['libs/jquery', 'libs/network', 'libs/persistencia', 'libs/formulario', 'libs/tabela/min/index', 'libs/gerenciador-crud'];
+var deps = ['libs/jquery', 'libs/helper', 'libs/network', 'libs/persistencia', 'libs/formulario', 'libs/formulario-select','libs/tabela/min/index', 'libs/gerenciador-crud'];
 
 requirejs(deps, function(){
-	var config = {
+	const CONFIG = {
 		tabela : {
 			container : 'table',
-			campos 	  : ["nome", "url", "endereco", "bairro", "telefone", "imagem", "categoria"]
+			campos 	  : ["nome", "url", "telefone", "categoria"]
 		},
 		formulario : 'form',
-		persistencia : 'locais'
+		persistencia : 'locais',
+		select : 'select'
 	};
 
-	var app = new GerenciadorCrud( config );
-	app.init();
+	var app = new GerenciadorCrud( CONFIG );
+	var persistenciaCategorias = new Persistencia( 'categorias' );
+	var selectCategorias = new FormularioSelect(CONFIG.select);
+
+	// carregamento inicial dos dados
+	app.init(function(){
+		// carrega as categorias que serao utilizadas no formulario
+		persistenciaCategorias.recuperarItens(function( erro, dados ){
+			if ( erro ) throw Erro( 'Erro ao recuperar dados: ' + erro );
+
+			selectCategorias.carregar( dados );
+		});
+	});
 });
